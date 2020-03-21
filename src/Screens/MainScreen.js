@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     tipsText: {
-        width: 100,
+        width: 110,
         textAlign: 'center'
     }
 });

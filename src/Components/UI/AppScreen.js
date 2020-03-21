@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 
-export const AppScreen = ({ style, children}) => {
+export const AppScreen = ({ style, children }) => {
     return (
-        <View style={ {...styles.appScreen, ...style} }>
+        <View style={ { ...styles.appScreen, ...style } }>
             { children }
         </View>
     );

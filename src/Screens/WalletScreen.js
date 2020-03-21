@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { AppScreen } from "../Components/UI/AppScreen";
-import { ThinText } from "../Components/UI/ThinText";
+import { Header } from '../Components/UI/Header';
 
-export const WalletScreen = ({ style, title }) => {
+export const WalletScreen = ({ onHomePress, style, title }) => {
     return (
         <AppScreen style={ style } >
-            <ThinText style={ { fontSize: 22 } }>
+            <Header onHomePress={ onHomePress }>
                 { title }
-            </ThinText>
+            </Header>
         </AppScreen>
     );
 };

@@ -8,7 +8,7 @@ import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
 
-export const MainLayout = (props) => {
+export const MainLayout = () => {
     const [screen, setScreen] = useState(null);
 
     let content = (
@@ -29,21 +29,22 @@ export const MainLayout = (props) => {
 
     if (screen === 'QR') {
         content = (
-            <QRCodeAddScreen title={ 'Новый платёж' }/>
+            <QRCodeAddScreen title={ 'Новый платёж' } onHomePress={ screenSelect }/>
         );
     }
 
     if (screen === 'WALLET') {
         content = (
-            <WalletScreen title={ 'Мой кошелёк' }/>
+            <WalletScreen title={ 'Мой кошелёк' } onHomePress={ screenSelect }/>
         );
     }
 
     if (screen === 'HISTORY') {
         content = (
-            <HistoryScreen title={ 'История транзакций' }/>
+            <HistoryScreen title={ 'История транзакций' } onHomePress={ screenSelect }/>
         );
     }
+
     return (
         <View style={ styles.container }>
             { content }
