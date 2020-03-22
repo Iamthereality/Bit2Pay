@@ -12,13 +12,12 @@ export const ModalWindow = ({ setVisibility, visible, qrData }) => {
               transparent={ false }
               visible={ visible }>
            <View style={ styles.container }>
-               <QRCode style={ styles.qrContainer }
-                       value={ qrData }
+               <QRCode value={ qrData }
                        size={ Dimensions.get('window').width - 40 }
-                       color={ THEME.BLACK_COLOR }
-                       backgroundColor={ THEME.WHITE_COLOR }/>
+                       color={ THEME.WHITE_COLOR }
+                       backgroundColor={ THEME.BLACK_COLOR }/>
                <AppButton onPress={ () => setVisibility(false) }>
-                   { 'OK' }
+                   { 'Готово' }
                </AppButton>
            </View>
        </Modal>
@@ -34,10 +33,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: THEME.BLACK_COLOR
-    },
-    // qrContainer: {
-    //     width: '100%',
-    //     padding: 10,
-    //     backgroundColor: THEME.WHITE_COLOR
-    // }
+    }
 });

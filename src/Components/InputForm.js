@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-import { ThinText } from './ThinText';
-import { THEME } from "../../THEME";
+import { THEME } from "../THEME";
 
-export const InputForm = ({ placeholder, keyboardType }) => {
+export const InputForm = ({ amount, setAmount, placeholder, keyboardType }) => {
     return (
         <View style={ styles.inputContainer }>
             <TextInput placeholder={ placeholder }
+                       value={ amount }
+                       onChangeText={ (text) => setAmount(text) }
                        style={ styles.input }
                        keyboardType={ keyboardType }/>
         </View>
@@ -22,14 +23,13 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 0.5,
         borderColor: THEME.WHITE_COLOR,
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     input: {
         fontSize: 16,
-        marginHorizontal: 10,
-        width: '90%',
+        width: '95%',
         height: 30,
         color: THEME.WHITE_COLOR,
         borderBottomWidth: 0.5,

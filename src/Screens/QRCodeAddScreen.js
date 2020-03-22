@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Keyboard } from 'react-native';
 
 import { AppScreen } from "../Components/UI/AppScreen";
 import { AppButton } from '../Components/UI/AppButton'
-import { InputForm } from '../Components/UI/InputForm'
+import { InputForm } from '../Components/InputForm'
 import { CurrencySelect } from '../Components/CurrencySelect';
 import { Header } from '../Components/UI/Header';
 import { ModalWindow } from "../Components/ModalWindow";
@@ -11,16 +11,29 @@ import { ModalWindow } from "../Components/ModalWindow";
 export const QRCodeAddScreen = ({ onHomePress, title }) => {
     const [currency, setCurrency] = useState(null);
     const [visible, setVisibility] = useState(false);
+    const [amount, setAmount] = useState('');
 
     const pay = () => {
         if (currency) {
-            setVisibility(true);
+            if (amount !== '') {
+                setVisibility(true);
+                Keyboard.dismiss();
+            } else {
+                Alert.alert('Пожалуйста, укажите сумму');
+            }
         } else {
+            Keyboard.dismiss();
             Alert.alert('Пожалуйста, выберите валюту');
         }
     };
 
-    const modal = visible ? <ModalWindow qrData={ currency } setVisibility={ setVisibility } visible={ visible }/> : null;
+    const clear = () => {
+        setCurrency(null);
+        setAmount('');
+        Keyboard.dismiss();
+    };
+
+    const modal = visible ? <ModalWindow qrData={ amount } setVisibility={ setVisibility } visible={ visible }/> : null;
     return (
         <AppScreen>
             <Header onHomePress={ onHomePress }>
@@ -28,9 +41,10 @@ export const QRCodeAddScreen = ({ onHomePress, title }) => {
             </Header>
             <View style={ styles.container }>
                 <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
-                <InputForm placeholder={ 'Введите сумму' } keyboardType={ 'numeric' } />
+                <InputForm placeholder={ 'Введите сумму' } keyboardType={ 'numeric' } amount={ amount } setAmount={ setAmount }/>
                 <View style={ styles.buttonContainer }>
-                    <AppButton buttonStyle={ styles.button }>
+                    <AppButton buttonStyle={ styles.button }
+                               onPress={ clear }>
                         { 'Сброс' }
                     </AppButton>
                     <AppButton buttonStyle={ styles.button }
