@@ -1,42 +1,78 @@
-import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Alert } from 'react-native';
 
-import { THEME } from "../THEME";
-import {AppButton} from "./UI/AppButton";
+import { THEME } from '../THEME';
+import { CurrencySelect } from "./CurrencySelect";
+import { AppButton } from "./UI/AppButton";
 
-export const AddForm = ({ address, setAddress, placeholder }) => {
-    const t = '63a7d5404e28302ec7039ecc5f24e38e9870342044c040f29cd48c9a6bbd2e2e';
+export const AddForm = ({ userData, setUserData }) => {
+    const [currency, setCurrency] = useState(null);
+    const [id, setID] = useState(null);
+    const [publicKey, setPublicKey] = useState(null);
+    const [privateKey, setPrivateKey] = useState(null);
 
-    console.log(t.length);
+    const clear = () => {
+        setCurrency(null);
+        setID(null);
+        setPublicKey(null);
+        setPrivateKey(null);
+    };
+
+    const setUser = () => {
+        setUserData([
+            {
+                walletCurrency: currency,
+                walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
+                walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
+                walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
+            }
+        ]);
+        console.log(userData);
+        // if (currency !== null && id !== null && publicKey !== null && privateKey !== null) {
+        //
+        //     console.log(userData);
+        // } else {
+        //     Alert.alert('Заполните все обязательные поля!');
+        // }
+    };
 
     return (
-        <View style={ styles.container }>
+        <>
+            <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
             <View style={ styles.inputContainer }>
-                <TextInput placeholder={ placeholder }
-                           value={ address }
-                           onChangeText={ (text) => setAddress(text) }
+                <TextInput placeholder={ 'Введите ID кошелька' }
+                           value={ id }
+                           onChangeText={ (text) => setID(text) }
                            style={ styles.input }/>
-
             </View>
-            <AppButton buttonStyle={ styles.button }
-                       textStyle={ styles.buttonText }
-                       onPress={ () => console.log(`test`) }>
-                { '+' }
-            </AppButton>
-        </View>
+            <View style={ styles.inputContainer }>
+                <TextInput placeholder={ 'Введите публичный ключ' }
+                           value={ publicKey }
+                           onChangeText={ (text) => setPublicKey(text) }
+                           style={ styles.input }/>
+            </View>
+            <View style={ styles.inputContainer }>
+                <TextInput placeholder={ 'Введите приватный ключ' }
+                           value={ privateKey }
+                           onChangeText={ (text) => setPrivateKey(text) }
+                           style={ styles.input }/>
+            </View>
+            <View style={ styles.buttonContainer }>
+                <AppButton buttonStyle={ styles.button } onPress={ clear }>
+                    { 'Сброс' }
+                </AppButton>
+                <AppButton buttonStyle={ styles.button } onPress={ setUser }>
+                    { 'Готово' }
+                </AppButton>
+            </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
     inputContainer: {
         marginVertical: 10,
-        width: '80%',
+        width: '100%',
         padding: 10,
         borderRadius: 50,
         borderWidth: 0.5,
@@ -53,11 +89,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: THEME.MAIN_COLOR
     },
-    button: {
-        width: 50,
-        marginVertical: 0
+    buttonContainer: {
+        marginVertical: 10,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    buttonText: {
-        fontSize: 26
+    button: {
+        width: '40%'
     }
 });

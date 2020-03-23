@@ -33,7 +33,7 @@ export const QRCodeAddScreen = ({ onHomePress, title }) => {
         Keyboard.dismiss();
     };
 
-    const modal = visible ? <ModalWindow qrData={ amount } setVisibility={ setVisibility } visible={ visible }/> : null;
+    const modal = visible ? <ModalWindow qrData={ amount } setVisibility={ setVisibility } visible={ visible } clear={ clear }/> : null;
     return (
         <AppScreen>
             <Header onHomePress={ onHomePress }>

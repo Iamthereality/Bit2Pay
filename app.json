@@ -1,21 +1,19 @@
 {
   "expo": {
-    "name": "Blank Template",
+    "name": "Prizm QR",
     "slug": "PRISMqrPAY",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
-      "ios",
-      "android",
-      "web"
+      "android"
     ],
-    "version": "1.0.0",
+    "version": "0.6.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#a600ff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +22,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.homesoftdev.prizm-qr",
+      "buildNumber": "0.6.4"
+    },
+    "android": {
+      "package": "com.homesoftdev.prizm_qr",
+      "versionCode": 1,
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "description": ""
   }
 }

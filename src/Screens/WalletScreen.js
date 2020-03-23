@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 
-import { AppScreen } from "../Components/UI/AppScreen";
+import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
 import { AppButton } from "../Components/UI/AppButton";
-import {AddForm} from "../Components/AddForm";
+import { AddForm } from '../Components/AddForm';
 
 export const WalletScreen = ({ onHomePress, style, title }) => {
-    const [address, setAddress] = useState(null);
+    const [isReadyToAdd, setIsReadyToAdd] = useState(false);
+    const [userData, setUserData] = useState(null);
+
+    const [isAdded, setIsAdded] = useState(false);
+
+
+    let content;
+
+    const addWalletData = () => {
+        setIsReadyToAdd(true);
+    };
+
+    if (!isReadyToAdd) {
+        content = (
+            <View style={ styles.buttonContainer }>
+                <AppButton buttonStyle={ styles.button }
+                           onPress={ addWalletData }>
+                    { 'Добавить кошелёк' }
+                </AppButton>
+            </View>
+        );
+    }
+
+    if (isReadyToAdd) {
+        content = (
+            <AddForm userData={ userData }
+                     setUserData={ setUserData }
+            />
+        );
+    }
 
     return (
         <AppScreen style={ style } >
@@ -15,7 +44,7 @@ export const WalletScreen = ({ onHomePress, style, title }) => {
                 { title }
             </Header>
             <View style={ styles.container }>
-                <AddForm placeholder={ 'Введите адрес кошелька' } address={ address } setAddress={ setAddress }/>
+                { content }
             </View>
         </AppScreen>
     );
@@ -34,9 +63,9 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     button: {
-        width: '40%'
+        width: '60%'
     }
 });

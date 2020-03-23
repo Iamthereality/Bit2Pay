@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { THEME } from "../THEME";
 import { AppButton } from "./UI/AppButton";
@@ -9,34 +9,50 @@ import { RegularText } from "./UI/RegularText";
 
 export const CurrencySelect = ({ setCurrency, label, currency }) => {
 
-    let ruble = (
+    let prizm = (
         <AppButton buttonStyle={ styles.button }
-                   onPress={ () => setCurrency('ruble') }>
-            <FontAwesome name={ 'ruble' } size={ 20 }/>
+                   onPress={ () => setCurrency('prizm') }>
+            { 'PZM' }
         </AppButton>
     );
 
-    let dollar = (
+    let ethereum = (
         <AppButton buttonStyle={ styles.button }
-                   onPress={ () => setCurrency('dollar')}>
-            <FontAwesome name={ 'dollar' } size={ 20 }/>
+                   onPress={ () => setCurrency('ethereum') }>
+            <MaterialCommunityIcons name={ 'ethereum' } size={ 20 }/>
         </AppButton>
     );
 
-    if (currency === 'ruble') {
-        ruble = (
+    let bitcoin = (
+        <AppButton buttonStyle={ styles.button }
+                   onPress={ () => setCurrency('bitcoin')}>
+            <FontAwesome name={ 'bitcoin' } size={ 20 }/>
+        </AppButton>
+    );
+
+    if (currency === 'prizm') {
+        prizm = (
             <AppButton buttonStyle={ styles.buttonSelected }
-                       onPress={ () => setCurrency('ruble') }>
-                <FontAwesome name={ 'ruble' } size={ 20 }/>
+                       onPress={ () => setCurrency('prizm') }>
+                { 'PZM' }
             </AppButton>
         );
     }
 
-    if (currency === 'dollar') {
-        dollar = (
+    if (currency === 'ethereum') {
+        ethereum = (
             <AppButton buttonStyle={ styles.buttonSelected }
-                       onPress={ () => setCurrency('dollar')}>
-                <FontAwesome name={ 'dollar' } size={ 20 }/>
+                       onPress={ () => setCurrency('ethereum') }>
+                <MaterialCommunityIcons name={ 'ethereum' } size={ 20 }/>
+            </AppButton>
+        );
+    }
+
+    if (currency === 'bitcoin') {
+        bitcoin = (
+            <AppButton buttonStyle={ styles.buttonSelected }
+                       onPress={ () => setCurrency('bitcoin')}>
+                <FontAwesome name={ 'bitcoin' } size={ 20 }/>
             </AppButton>
         );
     }
@@ -46,8 +62,9 @@ export const CurrencySelect = ({ setCurrency, label, currency }) => {
             <RegularText style={ styles.title }>
                 { label }
             </RegularText>
-            { ruble }
-            { dollar }
+            { prizm }
+            { ethereum }
+            { bitcoin }
         </View>
     );
 };
