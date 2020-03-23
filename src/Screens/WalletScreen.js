@@ -1,45 +1,61 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard, FlatList } from 'react-native';
 
 import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
 import { AppButton } from "../Components/UI/AppButton";
 import { AddForm } from '../Components/AddForm';
+import {ThinText} from "../Components/UI/ThinText";
 
-export const WalletScreen = ({ onHomePress, style, title }) => {
+export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
-    const [userData, setUserData] = useState(null);
-
-    const [isAdded, setIsAdded] = useState(false);
-
-
     let content;
 
-    const addWalletData = () => {
-        setIsReadyToAdd(true);
-    };
-
     if (!isReadyToAdd) {
-        content = (
-            <View style={ styles.buttonContainer }>
-                <AppButton buttonStyle={ styles.button }
-                           onPress={ addWalletData }>
-                    { 'Добавить кошелёк' }
-                </AppButton>
-            </View>
-        );
+        if (walletData.length === 0) {
+            content = (
+                <View style={ styles.buttonContainer }>
+                    <AppButton buttonStyle={ styles.button }
+                               onPress={ () => setIsReadyToAdd(true) }>
+                        { 'Добавить кошелёк' }
+                    </AppButton>
+                </View>
+            );
+        } else if (walletData.length !== 0) {
+            content = (
+                <>
+                    <View style={ styles.buttonContainer }>
+                        <AppButton buttonStyle={ styles.button }
+                                   onPress={ () => setIsReadyToAdd(true) }>
+                            { 'Добавить кошелёк' }
+                        </AppButton>
+                    </View>
+                    <FlatList style={ styles.tasks_list }
+                              keyExtractor={ item => item.walletPublicKey }
+                              data={ walletData }
+                              renderItem={
+                                  ({ item }) => (
+                                      <View style={ styles.buttonContainer }>
+                                          <ThinText>
+                                              { item.walletCurrency }
+                                          </ThinText>
+                                      </View>
+                                  )
+                              }
+                    />
+                </>
+            );
+        }
     }
 
     if (isReadyToAdd) {
         content = (
-            <AddForm userData={ userData }
-                     setUserData={ setUserData }
-            />
+            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
         );
     }
 
     return (
-        <AppScreen style={ style } >
+        <AppScreen>
             <Header onHomePress={ onHomePress }>
                 { title }
             </Header>
@@ -67,5 +83,8 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '60%'
+    },
+    tasks_list: {
+        width: '100%'
     }
 });

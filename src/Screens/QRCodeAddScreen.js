@@ -8,7 +8,7 @@ import { CurrencySelect } from '../Components/CurrencySelect';
 import { Header } from '../Components/UI/Header';
 import { ModalWindow } from "../Components/ModalWindow";
 
-export const QRCodeAddScreen = ({ onHomePress, title }) => {
+export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
     const [currency, setCurrency] = useState(null);
     const [visible, setVisibility] = useState(false);
     const [amount, setAmount] = useState('');
@@ -33,7 +33,7 @@ export const QRCodeAddScreen = ({ onHomePress, title }) => {
         Keyboard.dismiss();
     };
 
-    const modal = visible ? <ModalWindow qrData={ amount } setVisibility={ setVisibility } visible={ visible } clear={ clear }/> : null;
+    const modal = visible ? <ModalWindow qrData={ JSON.stringify(walletData) } setVisibility={ setVisibility } visible={ visible } clear={ clear }/> : null;
     return (
         <AppScreen>
             <Header onHomePress={ onHomePress }>

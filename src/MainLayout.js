@@ -8,8 +8,9 @@ import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
 
-export const MainLayout = () => {
+export const MainLayout = ({ walletData, setWalletData }) => {
     const [screen, setScreen] = useState(null);
+
 
     let content = (
         <MainScreen title={ 'Платёжный клиент Prizm' } />
@@ -29,13 +30,13 @@ export const MainLayout = () => {
 
     if (screen === 'QR') {
         content = (
-            <QRCodeAddScreen title={ 'Новый платёж' } onHomePress={ screenSelect }/>
+            <QRCodeAddScreen title={ 'Новый платёж' } walletData={ walletData } onHomePress={ screenSelect }/>
         );
     }
 
     if (screen === 'WALLET') {
         content = (
-            <WalletScreen title={ 'Мой кошелёк' } onHomePress={ screenSelect }/>
+            <WalletScreen title={ 'Мой кошелёк' } setWalletData={ setWalletData } walletData={ walletData } onHomePress={ screenSelect }/>
         );
     }
 
@@ -60,5 +61,5 @@ const styles = StyleSheet.create({
         backgroundColor: THEME.BLACK_COLOR,
         alignItems: 'flex-end',
         justifyContent: 'space-between',
-    },
+    }
 });

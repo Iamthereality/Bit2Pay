@@ -5,7 +5,7 @@ import { AppLoading } from "expo";
 
 import { MainLayout } from "./src/MainLayout";
 
-async function load_application() {
+async function loadApplication() {
     await Font.loadAsync({
         'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
         'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
@@ -15,10 +15,11 @@ async function load_application() {
 
 export default function App() {
     const [isReady, setIsReady] = useState(false);
+    const [walletData, setWalletData] = useState([]);
 
     if (!isReady) {
         return (
-            <AppLoading startAsync={ load_application }
+            <AppLoading startAsync={ loadApplication }
                         onError={ (error) => console.log(error) }
                         onFinish={() => setIsReady(true)}
             />
@@ -26,6 +27,6 @@ export default function App() {
     }
 
     return (
-        <MainLayout/>
+        <MainLayout walletData={ walletData } setWalletData={ setWalletData }/>
     );
 };

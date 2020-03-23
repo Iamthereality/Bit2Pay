@@ -5,7 +5,7 @@ import { THEME } from '../THEME';
 import { CurrencySelect } from "./CurrencySelect";
 import { AppButton } from "./UI/AppButton";
 
-export const AddForm = ({ userData, setUserData }) => {
+export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
     const [currency, setCurrency] = useState(null);
     const [id, setID] = useState(null);
     const [publicKey, setPublicKey] = useState(null);
@@ -19,21 +19,23 @@ export const AddForm = ({ userData, setUserData }) => {
     };
 
     const setUser = () => {
-        setUserData([
-            {
-                walletCurrency: currency,
-                walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
-                walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
-                walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
-            }
-        ]);
-        console.log(userData);
-        // if (currency !== null && id !== null && publicKey !== null && privateKey !== null) {
-        //
-        //     console.log(userData);
-        // } else {
-        //     Alert.alert('Заполните все обязательные поля!');
-        // }
+        if (currency !== null && id !== null && publicKey !== null && privateKey !== null) {
+            setWalletData((prevState) => [
+                ...prevState,
+                {
+                    walletCurrency: currency,
+                    walletID: id,
+                    walletPublicKey: publicKey,
+                    walletPrivateKey: privateKey
+                    // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
+                    // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
+                    // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
+                }
+            ]);
+            setIsReadyToAdd(false);
+        } else {
+            Alert.alert(`Заполните все обязательные поля`);
+        }
     };
 
     return (
@@ -61,7 +63,7 @@ export const AddForm = ({ userData, setUserData }) => {
                 <AppButton buttonStyle={ styles.button } onPress={ clear }>
                     { 'Сброс' }
                 </AppButton>
-                <AppButton buttonStyle={ styles.button } onPress={ setUser }>
+                <AppButton buttonStyle={ styles.button } onPress={ () => setUser() }>
                     { 'Готово' }
                 </AppButton>
             </View>
