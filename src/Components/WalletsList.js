@@ -5,7 +5,7 @@ import { THEME } from "../THEME";
 import { ThinText } from "./UI/ThinText";
 import { RegularText } from "./UI/RegularText";
 
-export const WalletSelect = ({ item }) => {
+export const WalletsList = ({ item }) => {
     return (
         <View style={ styles.container }>
             <RegularText style={ styles.title }>

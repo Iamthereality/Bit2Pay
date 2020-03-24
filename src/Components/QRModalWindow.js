@@ -6,13 +6,13 @@ import QRCode from 'react-native-qrcode-svg';
 import { THEME } from "../THEME";
 import { AppButton } from "./UI/AppButton";
 
-export const ModalWindow = ({ setVisibility, visible, qrData, clear }) => {
+export const QRModalWindow = ({ setVisibility, visible, qrData, clear }) => {
     return (
        <Modal animationType={ 'slide' }
               transparent={ false }
               visible={ visible }>
            <View style={ styles.container }>
-               <QRCode value={ qrData }
+               <QRCode value={ JSON.stringify(qrData) }
                        size={ Dimensions.get('window').width - 40 }
                        color={ THEME.WHITE_COLOR }
                        backgroundColor={ THEME.BLACK_COLOR }/>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Keyboard, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, KeyboardAvoidingView  } from 'react-native';
 
 import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
 import { AppButton } from "../Components/UI/AppButton";
 import { AddForm } from '../Components/AddForm';
-import {ThinText} from "../Components/UI/ThinText";
-import {WalletSelect} from "../Components/WalletSelect";
+import { WalletsList } from "../Components/WalletsList";
 
 export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
@@ -31,12 +30,12 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
                             { 'Добавить кошелёк' }
                         </AppButton>
                     </View>
-                    <FlatList style={ styles.tasks_list }
+                    <FlatList style={ styles.walletsList }
                               keyExtractor={ item => item.walletPublicKey }
                               data={ walletData }
                               renderItem={
                                   ({ item }) => (
-                                      <WalletSelect item={ item }/>
+                                      <WalletsList item={ item }/>
                                   )
                               }
                     />
@@ -47,19 +46,25 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
 
     if (isReadyToAdd) {
         content = (
-            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
+                <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
         );
     }
 
     return (
-        <AppScreen>
-            <Header onHomePress={ onHomePress }>
-                { title }
-            </Header>
-            <View style={ styles.container }>
-                { content }
-            </View>
-        </AppScreen>
+
+            <KeyboardAvoidingView  style={ {width: '100%'} }
+                                   behavior={ 'position' }
+                                   keyboardVerticalOffset={ -50 }>
+                <AppScreen>
+                <Header onHomePress={ onHomePress }>
+                    { title }
+                </Header>
+                <View style={ styles.container }>
+                    { content }
+                </View>
+                </AppScreen>
+            </KeyboardAvoidingView>
+
     );
 };
 
@@ -81,7 +86,8 @@ const styles = StyleSheet.create({
     button: {
         width: '60%'
     },
-    tasks_list: {
-        width: '100%'
+    walletsList: {
+        width: '100%',
+        marginBottom: 60
     }
 });

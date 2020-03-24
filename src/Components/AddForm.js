@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Keyboard } from 'react-native';
 
 import { CurrencySelect } from "./CurrencySelect";
 import { AppButton } from "./UI/AppButton";
@@ -16,12 +16,12 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
         setID(null);
         setPublicKey(null);
         setPrivateKey(null);
+        Keyboard.dismiss();
     };
 
     const setUser = () => {
         if (currency !== null && id !== null && publicKey !== null && privateKey !== null) {
             setWalletData((prevState) => [
-                ...prevState,
                 {
                     walletCurrency: currency,
                     walletID: id,
@@ -30,7 +30,8 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
                     // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
                     // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
                     // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
-                }
+                },
+                ...prevState
             ]);
             setIsReadyToAdd(false);
         } else {
@@ -45,10 +46,13 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
             <InputForm placeholder={ 'Введите публичный ключ' } value={ publicKey } onChangeText={ setPublicKey }/>
             <InputForm placeholder={ 'Введите приватный ключ' } value={ privateKey } onChangeText={ setPrivateKey }/>
             <View style={ styles.buttonContainer }>
+                <AppButton buttonStyle={ styles.button } onPress={ () => setIsReadyToAdd(false) }>
+                    { 'Отмена' }
+                </AppButton>
                 <AppButton buttonStyle={ styles.button } onPress={ clear }>
                     { 'Сброс' }
                 </AppButton>
-                <AppButton buttonStyle={ styles.button } onPress={ () => setUser() }>
+                <AppButton buttonStyle={ styles.button } onPress={ setUser }>
                     { 'Готово' }
                 </AppButton>
             </View>
@@ -65,6 +69,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     button: {
-        width: '40%'
+        width: '30%'
     }
 });

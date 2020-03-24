@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { AppButton } from './AppButton';
 import { RegularText } from './RegularText'
+import {THEME} from "../../THEME";
 
 export const Header = ({ onHomePress, children }) => {
     return (
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: THEME.BLACK_COLOR
     },
     homeButton: {
         borderColor: 'transparent',

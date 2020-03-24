@@ -11,47 +11,47 @@ export const CurrencySelect = ({ setCurrency, label, currency }) => {
 
     let prizm = (
         <AppButton buttonStyle={ styles.button }
-                   onPress={ () => setCurrency('prizm') }>
+                   onPress={ () => setCurrency('Prizm') }>
             { 'PZM' }
         </AppButton>
     );
 
     let ethereum = (
         <AppButton buttonStyle={ styles.button }
-                   onPress={ () => setCurrency('ethereum') }>
+                   onPress={ () => setCurrency('Ethereum') }>
             <MaterialCommunityIcons name={ 'ethereum' } size={ 20 }/>
         </AppButton>
     );
 
     let bitcoin = (
         <AppButton buttonStyle={ styles.button }
-                   onPress={ () => setCurrency('bitcoin')}>
+                   onPress={ () => setCurrency('Bitcoin')}>
             <FontAwesome name={ 'bitcoin' } size={ 20 }/>
         </AppButton>
     );
 
-    if (currency === 'prizm') {
+    if (currency === 'Prizm') {
         prizm = (
             <AppButton buttonStyle={ styles.buttonSelected }
-                       onPress={ () => setCurrency('prizm') }>
+                       onPress={ () => setCurrency('Prizm') }>
                 { 'PZM' }
             </AppButton>
         );
     }
 
-    if (currency === 'ethereum') {
+    if (currency === 'Ethereum') {
         ethereum = (
             <AppButton buttonStyle={ styles.buttonSelected }
-                       onPress={ () => setCurrency('ethereum') }>
+                       onPress={ () => setCurrency('Ethereum') }>
                 <MaterialCommunityIcons name={ 'ethereum' } size={ 20 }/>
             </AppButton>
         );
     }
 
-    if (currency === 'bitcoin') {
+    if (currency === 'Bitcoin') {
         bitcoin = (
             <AppButton buttonStyle={ styles.buttonSelected }
-                       onPress={ () => setCurrency('bitcoin')}>
+                       onPress={ () => setCurrency('Bitcoin')}>
                 <FontAwesome name={ 'bitcoin' } size={ 20 }/>
             </AppButton>
         );
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        paddingBottom: 30
     },
     title: {
         padding: 10,

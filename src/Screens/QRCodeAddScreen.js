@@ -5,42 +5,44 @@ import { AppScreen } from "../Components/UI/AppScreen";
 import { AppButton } from '../Components/UI/AppButton'
 import { InputForm } from '../Components/UI/InputForm'
 import { Header } from '../Components/UI/Header';
-import { CurrencySelect } from '../Components/CurrencySelect';
-import { ModalWindow } from "../Components/ModalWindow";
+import { QRModalWindow } from "../Components/QRModalWindow";
+import { SelectWallet } from "../Components/SelectWallet";
 
 export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
-    const [currency, setCurrency] = useState(null);
+    const [wallet, setWallet] = useState({});
+    const [walletsListVisibility, setWalletsListVisibility] = useState(false);
     const [visible, setVisibility] = useState(false);
     const [amount, setAmount] = useState('');
 
     const pay = () => {
-        if (currency) {
-            if (amount !== '') {
-                setVisibility(true);
-                Keyboard.dismiss();
-            } else {
-                Alert.alert('Пожалуйста, укажите сумму');
-            }
-        } else {
+        if (amount !== '') {
+            setVisibility(true);
             Keyboard.dismiss();
-            Alert.alert('Пожалуйста, выберите валюту');
+        } else {
+            Alert.alert('Пожалуйста, укажите сумму');
         }
     };
 
     const clear = () => {
-        setCurrency(null);
         setAmount('');
         Keyboard.dismiss();
     };
 
-    const modal = visible ? <ModalWindow qrData={ JSON.stringify(walletData) } setVisibility={ setVisibility } visible={ visible } clear={ clear }/> : null;
+    const modal = visible ? <QRModalWindow qrData={ wallet } setVisibility={ setVisibility } visible={ visible } clear={ clear }/> : null;
     return (
         <AppScreen>
             <Header onHomePress={ onHomePress }>
                 { title }
             </Header>
             <View style={ styles.container }>
-                <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
+                <AppButton onPress={ () => setWalletsListVisibility(true) }>
+                    { 'Выберите кошелёк' }
+                </AppButton>
+                <SelectWallet walletData={ walletData }
+                              setWallet={ setWallet }
+                              visible={ walletsListVisibility }
+                              setVisibility={ setWalletsListVisibility }
+                />
                 <InputForm placeholder={ 'Введите сумму' } keyboardType={ 'numeric' } value={ amount } onChangeText={ setAmount }/>
                 <View style={ styles.buttonContainer }>
                     <AppButton buttonStyle={ styles.button }
