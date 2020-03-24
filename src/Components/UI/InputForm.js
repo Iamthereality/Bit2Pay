@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-import { THEME } from "../THEME";
+import { THEME } from '../../THEME';
 
-export const InputForm = ({ amount, setAmount, placeholder, keyboardType }) => {
+export const InputForm = ({ value, onChangeText, placeholder, keyboardType }) => {
     return (
         <View style={ styles.inputContainer }>
             <TextInput placeholder={ placeholder }
-                       value={ amount }
-                       onChangeText={ (text) => setAmount(text) }
+                       value={ value }
+                       onChangeText={ (text) => onChangeText(text) }
                        style={ styles.input }
                        keyboardType={ keyboardType }/>
         </View>

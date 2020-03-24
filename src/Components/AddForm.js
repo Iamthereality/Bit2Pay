@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 
-import { THEME } from '../THEME';
 import { CurrencySelect } from "./CurrencySelect";
 import { AppButton } from "./UI/AppButton";
+import { InputForm } from "./UI/InputForm";
 
 export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
     const [currency, setCurrency] = useState(null);
@@ -41,24 +41,9 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
     return (
         <>
             <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
-            <View style={ styles.inputContainer }>
-                <TextInput placeholder={ 'Введите ID кошелька' }
-                           value={ id }
-                           onChangeText={ (text) => setID(text) }
-                           style={ styles.input }/>
-            </View>
-            <View style={ styles.inputContainer }>
-                <TextInput placeholder={ 'Введите публичный ключ' }
-                           value={ publicKey }
-                           onChangeText={ (text) => setPublicKey(text) }
-                           style={ styles.input }/>
-            </View>
-            <View style={ styles.inputContainer }>
-                <TextInput placeholder={ 'Введите приватный ключ' }
-                           value={ privateKey }
-                           onChangeText={ (text) => setPrivateKey(text) }
-                           style={ styles.input }/>
-            </View>
+            <InputForm placeholder={ 'Введите ID кошелька' } value={ id } onChangeText={ setID }/>
+            <InputForm placeholder={ 'Введите публичный ключ' } value={ publicKey } onChangeText={ setPublicKey }/>
+            <InputForm placeholder={ 'Введите приватный ключ' } value={ privateKey } onChangeText={ setPrivateKey }/>
             <View style={ styles.buttonContainer }>
                 <AppButton buttonStyle={ styles.button } onPress={ clear }>
                     { 'Сброс' }
@@ -72,25 +57,6 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
 };
 
 const styles = StyleSheet.create({
-    inputContainer: {
-        marginVertical: 10,
-        width: '100%',
-        padding: 10,
-        borderRadius: 50,
-        borderWidth: 0.5,
-        borderColor: THEME.WHITE_COLOR,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    input: {
-        fontSize: 16,
-        width: '95%',
-        height: 30,
-        color: THEME.WHITE_COLOR,
-        borderBottomWidth: 0.5,
-        borderBottomColor: THEME.MAIN_COLOR
-    },
     buttonContainer: {
         marginVertical: 10,
         width: '100%',

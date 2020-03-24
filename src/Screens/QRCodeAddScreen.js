@@ -3,9 +3,9 @@ import { StyleSheet, View, Alert, Keyboard } from 'react-native';
 
 import { AppScreen } from "../Components/UI/AppScreen";
 import { AppButton } from '../Components/UI/AppButton'
-import { InputForm } from '../Components/InputForm'
-import { CurrencySelect } from '../Components/CurrencySelect';
+import { InputForm } from '../Components/UI/InputForm'
 import { Header } from '../Components/UI/Header';
+import { CurrencySelect } from '../Components/CurrencySelect';
 import { ModalWindow } from "../Components/ModalWindow";
 
 export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
@@ -41,7 +41,7 @@ export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
             </Header>
             <View style={ styles.container }>
                 <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
-                <InputForm placeholder={ 'Введите сумму' } keyboardType={ 'numeric' } amount={ amount } setAmount={ setAmount }/>
+                <InputForm placeholder={ 'Введите сумму' } keyboardType={ 'numeric' } value={ amount } onChangeText={ setAmount }/>
                 <View style={ styles.buttonContainer }>
                     <AppButton buttonStyle={ styles.button }
                                onPress={ clear }>

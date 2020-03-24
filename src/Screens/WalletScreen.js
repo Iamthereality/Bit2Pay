@@ -6,6 +6,7 @@ import { Header } from '../Components/UI/Header';
 import { AppButton } from "../Components/UI/AppButton";
 import { AddForm } from '../Components/AddForm';
 import {ThinText} from "../Components/UI/ThinText";
+import {WalletSelect} from "../Components/WalletSelect";
 
 export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
@@ -35,11 +36,7 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
                               data={ walletData }
                               renderItem={
                                   ({ item }) => (
-                                      <View style={ styles.buttonContainer }>
-                                          <ThinText>
-                                              { item.walletCurrency }
-                                          </ThinText>
-                                      </View>
+                                      <WalletSelect item={ item }/>
                                   )
                               }
                     />
