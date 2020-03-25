@@ -1,21 +1,36 @@
-export const Prizm = () => {
+export default class {
+    #api_base = 'https://api.prizmbit.com/api/po/MarketData/GetMarketPrices';
 
-    // #img_url = `https://starwars-visualguide.com/assets/img/`;
+    get_data = async (url) => {
+        const server_response = await fetch(`${this.#api_base}${url}`);
+        if (!server_response.ok) {
+            throw new Error(`Could not fetch ${this.#api_base}${url}, received ${server_response.status}`);
+        }
+        return await server_response.json();
+    };
 
-    return get_data('GetChart');
+    get_currency_prices = async () => {
+        return await this.get_data(``);
+    };
 
-};
+    #extract_id = (item) => {
+        const reg_exp = /\/([0-9]*)\/$/;
+        return item.url.match(reg_exp)[1];
+    };
 
-const api_base = 'https://api.prizmbit.com/api/po';
+    #transform_person_data = (person) => {
+        return {
+            id: this.#extract_id(person),
+            name: person.name,
+            gender: person.gender,
+            birth_year: person.birth_year,
+            eye_color: person.eye_color
+        }
+    };
 
-const get_data = async (url) => {
-    const server_response = await fetch(`${api_base}${url}`);
-    if (!server_response.ok) {
-        throw new Error(`Could not fetch ${api_base}${url}, received ${server_response.status}`);
-    }
-    return await server_response;
-};
-
-// const getChart = async (GetChart) => {
-//     return get_data(GetChart);
-// };
+    get_person = async (id) => {
+        const person = await this.get_data(`/people/${id}`);
+        console.log(this.#transform_person_data(person));
+        return this.#transform_person_data(person);
+    };
+}

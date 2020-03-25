@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet, Modal, Dimensions } from 'react-native';
 
 import QRCode from 'react-native-qrcode-svg';
 
 import { THEME } from "../THEME";
 import { AppButton } from "./UI/AppButton";
-import { Prizm } from "../Services/Prizm";
+import  Prizm  from "../Services/Prizm";
 
 export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount }) => {
+    const prizm = new Prizm();
 
+    const currencyAmount = (response, wallet) => {
+        if (wallet.walletCurrency === 'Prizm') {
+           response[0]['marketName'];
+        }
+    };
 
+    prizm.get_currency_prices()
+        .then((resp) => currencyAmount(resp, qrData))
+        .catch((e) => console.log(e));
 
-    console.log(Prizm());
 
     const codeGenerator = (qrData, amount) => {
         return `${ qrData.walletID }:${ qrData.walletPublicKey }:${ amount }`
