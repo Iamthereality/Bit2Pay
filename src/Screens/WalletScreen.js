@@ -51,7 +51,6 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
     }
 
     return (
-
             <KeyboardAvoidingView  style={ {width: '100%'} }
                                    behavior={ 'position' }
                                    keyboardVerticalOffset={ -50 }>
@@ -64,7 +63,6 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
                 </View>
                 </AppScreen>
             </KeyboardAvoidingView>
-
     );
 };
 
