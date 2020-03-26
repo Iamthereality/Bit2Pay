@@ -9,28 +9,31 @@ export default class {
         return await server_response.json();
     };
 
-    get_currency_prices = async () => {
-        return await this.get_data(``);
+    get_currency_prices = async (selected_currency) => {
+        const server_response = await this.get_data(``);
+        return server_response.map((currency) => {
+            return Object.entries(currency);
+        });
     };
 
-    #extract_id = (item) => {
-        const reg_exp = /\/([0-9]*)\/$/;
-        return item.url.match(reg_exp)[1];
-    };
-
-    #transform_person_data = (person) => {
-        return {
-            id: this.#extract_id(person),
-            name: person.name,
-            gender: person.gender,
-            birth_year: person.birth_year,
-            eye_color: person.eye_color
-        }
-    };
-
-    get_person = async (id) => {
-        const person = await this.get_data(`/people/${id}`);
-        console.log(this.#transform_person_data(person));
-        return this.#transform_person_data(person);
-    };
+    // #extract_id = (item) => {
+    //     const reg_exp = /\/([0-9]*)\/$/;
+    //     return item.url.match(reg_exp)[1];
+    // };
+    //
+    // #transform_person_data = (person) => {
+    //     return {
+    //         id: this.#extract_id(person),
+    //         name: person.name,
+    //         gender: person.gender,
+    //         birth_year: person.birth_year,
+    //         eye_color: person.eye_color
+    //     }
+    // };
+    //
+    // get_person = async (id) => {
+    //     const person = await this.get_data(`/people/${id}`);
+    //     console.log(this.#transform_person_data(person));
+    //     return this.#transform_person_data(person);
+    // };
 }
