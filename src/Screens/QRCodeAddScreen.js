@@ -7,9 +7,9 @@ import { AppScreen } from "../Components/UI/AppScreen";
 import { AppButton } from '../Components/UI/AppButton'
 import { InputForm } from '../Components/UI/InputForm'
 import { Header } from '../Components/UI/Header';
-import { QRModalWindow } from "../Components/QRModalWindow";
-import { SelectWallet } from "../Components/SelectWallet";
-import {RegularText} from "../Components/UI/RegularText";
+import { QRModalWindow } from "../Components/ModalWindows/QRModalWindow";
+import { SelectWalletModalWindow } from "../Components/ModalWindows/SelectWalletModalWindow";
+import { RegularText } from "../Components/UI/RegularText";
 
 export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
     const [walletSelected, setWalletSelected] = useState(false);
@@ -75,11 +75,11 @@ export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
                 <View style={ styles.walletSelectContainer }>
                     { walletSelection }
                 </View>
-                <SelectWallet walletData={ walletData }
-                              setWallet={ setWallet }
-                              visible={ walletsListVisibility }
-                              setVisibility={ setWalletsListVisibility }
-                              setWalletSelected={ setWalletSelected }
+                <SelectWalletModalWindow walletData={ walletData }
+                                         setWallet={ setWallet }
+                                         visible={ walletsListVisibility }
+                                         setVisibility={ setWalletsListVisibility }
+                                         setWalletSelected={ setWalletSelected }
                 />
                 <InputForm placeholder={ 'Введите сумму' }
                            keyboardType={ 'numeric' }

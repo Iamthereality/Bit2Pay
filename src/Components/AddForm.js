@@ -9,14 +9,18 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
     const [currency, setCurrency] = useState(null);
     const [id, setID] = useState(null);
     const [publicKey, setPublicKey] = useState(null);
-    // const [privateKey, setPrivateKey] = useState(null);
 
     const clear = () => {
-        setCurrency(null);
         setID(null);
         setPublicKey(null);
         // setPrivateKey(null);
         Keyboard.dismiss();
+    };
+
+    const cancel = () => {
+        setCurrency(null);
+        setID(null);
+        setPublicKey(null);
     };
 
     const setUser = () => {
@@ -39,23 +43,69 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
         }
     };
 
+    let content;
+
+    if (currency === null) {
+       content = (
+            <>
+                <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
+
+                <View style={ { ...styles.buttonContainer, justifyContent: 'center' } }>
+                    <AppButton buttonStyle={ styles.button } onPress={ () => setIsReadyToAdd(false) }>
+                        { 'Назад' }
+                    </AppButton>
+                </View>
+            </>
+        );
+    }
+
+    const clearButton = (id !== null && id !== '') || (publicKey !== null && publicKey !== '') ? (
+        <AppButton buttonStyle={ styles.button } onPress={ clear }>
+            { 'Очистить' }
+        </AppButton>
+    ) : null;
+
+    if (currency === 'Prizm') {
+        content = (
+            <>
+                <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
+                <InputForm placeholder={ 'Введите ID кошелька' } value={ id } onChangeText={ setID }/>
+                <InputForm placeholder={ 'Введите публичный ключ' } value={ publicKey } onChangeText={ setPublicKey }/>
+                <View style={ styles.buttonContainer }>
+                    <AppButton buttonStyle={ styles.button } onPress={ cancel }>
+                        { 'Отмена' }
+                    </AppButton>
+                    { clearButton }
+                    <AppButton buttonStyle={ styles.button } onPress={ setUser }>
+                        { 'Сохранить' }
+                    </AppButton>
+                </View>
+            </>
+        );
+    }
+
+    if (currency === 'Ethereum' || currency === 'Bitcoin') {
+        content = (
+            <>
+                <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
+                <InputForm placeholder={ 'Введите название' } value={ id } onChangeText={ setID }/>
+                <InputForm placeholder={ 'Введите адрес' } value={ publicKey } onChangeText={ setPublicKey }/>
+                <View style={ styles.buttonContainer }>
+                    <AppButton buttonStyle={ styles.button } onPress={ cancel }>
+                        { 'Отмена' }
+                    </AppButton>
+                    { clearButton }
+                    <AppButton buttonStyle={ styles.button } onPress={ setUser }>
+                        { 'Сохранить' }
+                    </AppButton>
+                </View>
+            </>
+        );
+    }
+
     return (
         <>
-            <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
-            <InputForm placeholder={ 'Введите ID кошелька' } value={ id } onChangeText={ setID }/>
-            <InputForm placeholder={ 'Введите публичный ключ' } value={ publicKey } onChangeText={ setPublicKey }/>
-            {/*<InputForm placeholder={ 'Введите приватный ключ' } value={ privateKey } onChangeText={ setPrivateKey }/>*/}
-            <View style={ styles.buttonContainer }>
-                <AppButton buttonStyle={ styles.button } onPress={ () => setIsReadyToAdd(false) }>
-                    { 'Отмена' }
-                </AppButton>
-                <AppButton buttonStyle={ styles.button } onPress={ clear }>
-                    { 'Сброс' }
-                </AppButton>
-                <AppButton buttonStyle={ styles.button } onPress={ setUser }>
-                    { 'Готово' }
-                </AppButton>
-            </View>
+            { content }
         </>
     );
 };

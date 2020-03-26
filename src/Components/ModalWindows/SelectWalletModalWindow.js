@@ -1,12 +1,12 @@
 import React from 'react';
 import {FlatList, Modal, StyleSheet, View} from 'react-native';
 
-import { THEME } from "../THEME";
-import {AppButton} from "./UI/AppButton";
-import {RegularText} from "./UI/RegularText";
-import {ThinText} from "./UI/ThinText";
+import { THEME } from "../../THEME";
+import {AppButton} from "../UI/AppButton";
+import {RegularText} from "../UI/RegularText";
+import {ThinText} from "../UI/ThinText";
 
-export const SelectWallet = ({ walletData, setVisibility, visible, setWallet, setWalletSelected }) => {
+export const SelectWalletModalWindow = ({ walletData, setVisibility, visible, setWallet, setWalletSelected }) => {
 
     const onPress = (item) => {
         setWallet(item);

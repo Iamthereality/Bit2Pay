@@ -3,10 +3,10 @@ import {View, StyleSheet, Modal, Dimensions, Animated, Easing} from 'react-nativ
 
 import QRCode from 'react-native-qrcode-svg';
 
-import { THEME } from "../THEME";
-import { AppButton } from "./UI/AppButton";
-import  Prizm  from "../Services/Prizm";
-import {RegularText} from "./UI/RegularText";
+import { THEME } from "../../THEME";
+import { AppButton } from "../UI/AppButton";
+import  Prizm  from "../../Services/Prizm";
+import {RegularText} from "../UI/RegularText";
 
 export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount }) => {
     const [price, setPrice] = useState(null);
@@ -81,7 +81,7 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
         <View style={ styles.greetings }>
             <View style={ styles.image_wrap }>
                 <Animated.Image style={ { ...styles.image, transform: [{rotate: spin}] } }
-                                source={ require('../../assets/loading.png') }
+                                source={ require('../../../assets/loading.png') }
                 />
             </View>
         </View>
