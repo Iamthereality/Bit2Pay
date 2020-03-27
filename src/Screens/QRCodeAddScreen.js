@@ -13,24 +13,29 @@ import { RegularText } from "../Components/UI/RegularText";
 
 export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
     const [walletSelected, setWalletSelected] = useState(false);
-    const [wallet, setWallet] = useState({});
+    const [wallet, setWallet] = useState(null);
     const [walletsListVisibility, setWalletsListVisibility] = useState(false);
     const [visible, setVisibility] = useState(false);
     const [amount, setAmount] = useState('');
 
     const pay = () => {
-        if (amount !== '') {
-            setVisibility(true);
-            Keyboard.dismiss();
+        if(wallet) {
+            if (amount !== '') {
+                setVisibility(true);
+                Keyboard.dismiss();
+            } else {
+                Alert.alert('Пожалуйста, укажите сумму');
+            }
         } else {
-            Alert.alert('Пожалуйста, укажите сумму');
+            Alert.alert('Пожалуйста, выберите кошелёк');
         }
     };
 
     const clear = () => {
         setAmount('');
-        Keyboard.dismiss();
+        setWallet(null);
         setWalletSelected(false);
+        Keyboard.dismiss();
     };
 
     const walletSelection = !walletSelected ? (
@@ -81,7 +86,7 @@ export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
                                          setVisibility={ setWalletsListVisibility }
                                          setWalletSelected={ setWalletSelected }
                 />
-                <InputForm placeholder={ 'Введите сумму' }
+                <InputForm placeholder={ 'Введите сумму отплаты в рублях' }
                            keyboardType={ 'numeric' }
                            value={ amount }
                            onChangeText={ setAmount }/>

@@ -13,7 +13,6 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
     const clear = () => {
         setID(null);
         setPublicKey(null);
-        // setPrivateKey(null);
         Keyboard.dismiss();
     };
 
@@ -30,7 +29,7 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
                     walletCurrency: currency,
                     walletID: id,
                     walletPublicKey: publicKey,
-                    // walletPrivateKey: privateKey
+                    id: Date.now()
                     // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
                     // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
                     // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'

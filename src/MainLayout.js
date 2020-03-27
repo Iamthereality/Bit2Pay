@@ -8,7 +8,7 @@ import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
 
-export const MainLayout = ({ walletData, setWalletData }) => {
+export const MainLayout = ({ walletData, setWalletData, updateWalletData }) => {
     const [screen, setScreen] = useState(null);
 
 
@@ -36,7 +36,11 @@ export const MainLayout = ({ walletData, setWalletData }) => {
 
     if (screen === 'WALLET') {
         content = (
-            <WalletScreen title={ 'Мой кошелёк' } setWalletData={ setWalletData } walletData={ walletData } onHomePress={ screenSelect }/>
+            <WalletScreen title={ 'Мой кошелёк' }
+                          setWalletData={ setWalletData }
+                          walletData={ walletData }
+                          onHomePress={ screenSelect }
+                          updateWalletData={ updateWalletData }/>
         );
     }
 

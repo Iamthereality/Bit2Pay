@@ -19,7 +19,8 @@ export default function App() {
         {
             walletCurrency: 'Prizm',
             walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
-            walletPublicKey: '8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc'
+            walletPublicKey: '8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
+            id: Date.now()
         }
         ]);
 
@@ -32,7 +33,18 @@ export default function App() {
         );
     }
 
+    const updateWalletData = (id, walletID, publicKey) => {
+        setWalletData((old) => old.map((wallet) => {
+                if (wallet.id === id) {
+                    wallet.walletID = walletID;
+                    wallet.walletPublicKey = publicKey;
+                }
+                return wallet;
+            })
+        );
+    };
+
     return (
-        <MainLayout walletData={ walletData } setWalletData={ setWalletData }/>
+        <MainLayout walletData={ walletData } setWalletData={ setWalletData } updateWalletData={ updateWalletData }/>
     );
 };

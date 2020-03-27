@@ -23,7 +23,7 @@ export const SelectWalletModalWindow = ({ walletData, setVisibility, visible, se
                     { 'Выберите кошелёк' }
                 </RegularText>
                 <FlatList style={ styles.walletsList }
-                          keyExtractor={ item => item.walletPublicKey }
+                          keyExtractor={ item => item.id.toString() }
                           data={ walletData }
                           renderItem={
                               ({ item }) => (

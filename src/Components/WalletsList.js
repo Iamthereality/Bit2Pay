@@ -1,19 +1,25 @@
-import React from 'react';
-import {View, StyleSheet, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 
 import { THEME } from "../THEME";
 import { ThinText } from "./UI/ThinText";
 import { RegularText } from "./UI/RegularText";
+import { EditWalletDataModalWindow } from "./ModalWindows/EditWalletDataModalWindow";
 
-export const WalletsList = ({ item, openWallet }) => {
+export const WalletsList = ({ item, updateWalletData }) => {
     const Wrapper = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+    const [visible, setVisibility] = useState(false);
     return (
         <View style={ styles.container }>
             <Wrapper activeOpacity={ 0.7 }
-                     onPress={ () => console.log('wallet') }
-                     background={TouchableNativeFeedback.Ripple(THEME.WHITE_COLOR, true)}
+                     onPress={ () => setVisibility(true) }
+                     background={ TouchableNativeFeedback.Ripple(THEME.WHITE_COLOR, true) }
             >
                 <View style={ styles.innerContainer }>
+                    <EditWalletDataModalWindow visible={ visible }
+                                               wallet={ item }
+                                               setVisibility={ setVisibility }
+                                               updateWalletData={ updateWalletData }/>
                     <RegularText style={ styles.title }>
                         { item.walletCurrency }
                     </RegularText>

@@ -3,11 +3,11 @@ import { StyleSheet, View, FlatList, KeyboardAvoidingView  } from 'react-native'
 
 import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
-import { AppButton } from "../Components/UI/AppButton";
+import { AppButton } from '../Components/UI/AppButton';
 import { AddForm } from '../Components/AddForm';
-import { WalletsList } from "../Components/WalletsList";
+import { WalletsList } from '../Components/WalletsList';
 
-export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) => {
+export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
     let content;
 
@@ -31,11 +31,12 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title }) 
                         </AppButton>
                     </View>
                     <FlatList style={ styles.walletsList }
-                              keyExtractor={ item => item.walletPublicKey }
+                              keyExtractor={ item => item.id.toString() }
                               data={ walletData }
                               renderItem={
                                   ({ item }) => (
-                                      <WalletsList item={ item }/>
+                                      <WalletsList item={ item }
+                                                   updateWalletData={ updateWalletData }/>
                                   )
                               }
                     />

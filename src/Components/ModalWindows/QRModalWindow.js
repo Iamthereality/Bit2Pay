@@ -1,64 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {View, StyleSheet, Modal, Dimensions, Animated, Easing} from 'react-native';
 
 import QRCode from 'react-native-qrcode-svg';
 
 import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
+import { RegularText } from "../UI/RegularText";
 import  Prizm  from "../../Services/Prizm";
-import {RegularText} from "../UI/RegularText";
 
 export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount }) => {
-    const [price, setPrice] = useState(null);
     const prizm = new Prizm();
+    const [price, setPrice] = useState(null);
+
+    useEffect(() => {
+        prizm.get_currency_prices()
+            .then((resp) => currencyAmount(resp, qrData))
+            .catch((e) => console.log(e));
+    }, []);
 
     const currencyAmount = (response, wallet) => {
+        const priceSetter = (pair) => {
+            response.forEach((currency) => {
+                currency.forEach((prop) => {
+                    if (prop[1] === pair) {
+                        currency.forEach((prop) => {
+                            if (prop[0] === 'price') {
+                                setPrice(prop[1]);
+                            }
+                        });
+                    }
+                });
+            });
+        };
+
         if (wallet.walletCurrency === 'Prizm') {
-           response.forEach((currency) => {
-               currency.forEach((prop) => {
-                   if (prop[1] === 'PZM/RUB') {
-                       currency.forEach((prop) => {
-                           if (prop[0] === 'price') {
-                               setPrice(prop[1]);
-                           }
-                       });
-                   }
-               });
-           });
+           priceSetter('PZM/RUB');
         }
         if (wallet.walletCurrency === 'Ethereum') {
-            response.forEach((currency) => {
-                currency.forEach((prop) => {
-                    if (prop[1] === 'ETH/RUB') {
-                        currency.forEach((prop) => {
-                            if (prop[0] === 'price') {
-                                setPrice(prop[1]);
-                            }
-                        });
-                    }
-                });
-            });
+            priceSetter('ETH/RUB');
         }
         if (wallet.walletCurrency === 'Bitcoin') {
-            response.forEach((currency) => {
-                currency.forEach((prop) => {
-                    if (prop[1] === 'BTC/RUB') {
-                        currency.forEach((prop) => {
-                            if (prop[0] === 'price') {
-                                setPrice(prop[1]);
-                            }
-                        });
-                    }
-                });
-            });
+            priceSetter('BTC/RUB');
         }
     };
-
-    prizm.get_currency_prices()
-        .then((resp) => currencyAmount(resp, qrData))
-        .catch((e) => console.log(e));
-
-
 
     const spinValue = new Animated.Value(0);
 
@@ -66,7 +50,7 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
         spinValue,
         {
             toValue: 1,
-            duration: 9000,
+            duration: 900,
             easing: Easing.linear,
             useNativeDriver: true
         }
@@ -74,7 +58,7 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
 
     const spin = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['360deg', '0deg']
+        outputRange: ['0deg', '360deg']
     });
 
     let content = (
@@ -88,13 +72,30 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
     );
 
     if (price) {
-        const cryptoAmount = parseFloat(amount / price).toFixed(3);
-        const percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(3);
-        const sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(3);
+        let cryptoAmount, percentage, sum;
+
+        if (qrData.walletCurrency === 'Prizm') {
+            cryptoAmount = parseFloat(amount / price).toFixed(3);
+            percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(3);
+            sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(3);
+        } else if (qrData.walletCurrency === 'Ethereum' || qrData.walletCurrency === 'Bitcoin') {
+            cryptoAmount = parseFloat(amount / price).toFixed(10);
+            percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(10);
+            sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(10);
+        }
 
         const codeGenerator = (qrData) => {
-            return `${ qrData.walletID }:${ qrData.walletPublicKey }:${ sum }`;
+            if (qrData.walletCurrency === 'Prizm') {
+                return `${ qrData.walletID }:${ qrData.walletPublicKey }:${ sum }`;
+            }
+            if (qrData.walletCurrency === 'Ethereum') {
+                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletPublicKey }?value=${ sum }`;
+            }
+            if (qrData.walletCurrency === 'Bitcoin') {
+                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletPublicKey }?amount=${ sum }`;
+            }
         };
+
         content = (
             <>
             <QRCode value={ codeGenerator(qrData) }
@@ -102,10 +103,10 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
                     color={ THEME.WHITE_COLOR }
                     backgroundColor={ THEME.BLACK_COLOR }/>
                 <RegularText>
-                    { `Сумма: ${ sum } PZM` }
+                    { `Сумма: ${ sum } ${qrData.walletCurrency}` }
                 </RegularText>
                 <RegularText>
-                    { `Текущий курс: 1 PZM = ${ price } ₽` }
+                    { `Текущий курс: 1 ${qrData.walletCurrency} = ${ price } ₽` }
                 </RegularText>
             </>
         );
@@ -116,10 +117,6 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
               transparent={ false }
               visible={ visible }>
            <View style={ styles.container }>
-               {/*<QRCode value={ codeGenerator(qrData, amount) }*/}
-               {/*        size={ Dimensions.get('window').width - 40 }*/}
-               {/*        color={ THEME.WHITE_COLOR }*/}
-               {/*        backgroundColor={ THEME.BLACK_COLOR }/>*/}
                { content }
                <AppButton onPress={ () => {
                    setVisibility(false);
