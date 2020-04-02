@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, FlatList, KeyboardAvoidingView  } from 'react-native';
 
+import { Feather } from '@expo/vector-icons';
+
 import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
 import { AppButton } from '../Components/UI/AppButton';
 import { AddForm } from '../Components/AddForm';
 import { WalletsList } from '../Components/WalletsList';
+import { PinCodeModalWindow } from "../Components/ModalWindows/PinCodeModalWindow";
+import { EditPinCodeModalWindow } from "../Components/ModalWindows/EditPinCodeModalWindow";
 
-export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData }) => {
+export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData, pinCode, setPinCode }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
-    let content;
+    const [pinPadIsVisible, setPinPadIsVisible] = useState(true);
+    const [editPinScreenIsVisible, setEditPinScreenIsVisible] = useState(false);
+
+    let content, pinPad;
+
+    if (pinCode !== null) {
+        pinPad = (
+            <>
+                <PinCodeModalWindow setVisibility={ setPinPadIsVisible }
+                                    visible={ pinPadIsVisible }
+                                    pinCode={ pinCode }
+                                    onHomePress={ onHomePress }/>
+            </>
+        );
+    } else if (pinCode === null) {
+        pinPad = null;
+    }
 
     if (!isReadyToAdd) {
         if (walletData.length === 0) {
@@ -18,6 +38,10 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
                     <AppButton buttonStyle={ styles.button }
                                onPress={ () => setIsReadyToAdd(true) }>
                         { 'Добавить кошелёк' }
+                    </AppButton>
+                    <AppButton buttonStyle={ { width: 50 } }
+                               onPress={ () => setEditPinScreenIsVisible(true) }>
+                        <Feather name={ 'settings' } size={ 20 }/>
                     </AppButton>
                 </View>
             );
@@ -28,6 +52,10 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
                         <AppButton buttonStyle={ styles.button }
                                    onPress={ () => setIsReadyToAdd(true) }>
                             { 'Добавить кошелёк' }
+                        </AppButton>
+                        <AppButton buttonStyle={ { width: 50 } }
+                                   onPress={ () => setEditPinScreenIsVisible(true) }>
+                            <Feather name={ 'settings' } size={ 20 }/>
                         </AppButton>
                     </View>
                     <FlatList style={ styles.walletsList }
@@ -47,7 +75,7 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
 
     if (isReadyToAdd) {
         content = (
-                <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
+            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
         );
     }
 
@@ -55,13 +83,17 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
             <KeyboardAvoidingView  style={ {width: '100%'} }
                                    behavior={ 'position' }
                                    keyboardVerticalOffset={ -50 }>
+                <EditPinCodeModalWindow setVisibility={ setEditPinScreenIsVisible }
+                                        visible={ editPinScreenIsVisible }
+                                        setPinCode={ setPinCode }/>
+                { pinPad }
                 <AppScreen>
-                <Header onHomePress={ onHomePress }>
-                    { title }
-                </Header>
-                <View style={ styles.container }>
-                    { content }
-                </View>
+                    <Header onHomePress={ onHomePress }>
+                        { title }
+                    </Header>
+                    <View style={ styles.container }>
+                        { content }
+                    </View>
                 </AppScreen>
             </KeyboardAvoidingView>
     );
@@ -80,7 +112,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     button: {
         width: '60%'

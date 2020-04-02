@@ -85,6 +85,7 @@ export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
                                          visible={ walletsListVisibility }
                                          setVisibility={ setWalletsListVisibility }
                                          setWalletSelected={ setWalletSelected }
+                                         onHomePress={ onHomePress }
                 />
                 <InputForm placeholder={ 'Введите сумму отплаты в рублях' }
                            keyboardType={ 'numeric' }

@@ -47,14 +47,16 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
     },
     title: {
-        padding: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
         fontSize: 20,
         color: THEME.WHITE_COLOR,
     },
     data: {
-        padding: 15
+        paddingHorizontal: 10,
+        paddingVertical: 15
     }
 });

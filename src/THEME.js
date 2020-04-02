@@ -1,5 +1,16 @@
+const black = '#000000';
 export const THEME = {
     MAIN_COLOR: '#a600ff',
     WHITE_COLOR: '#ffffff',
-    BLACK_COLOR: '#000000'
+    BLACK_COLOR: black,
+    CONTAINER: {
+        paddingTop: 20,
+        padding: 20,
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: black
+    }
 };

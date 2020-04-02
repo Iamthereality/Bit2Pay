@@ -8,7 +8,7 @@ import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
 
-export const MainLayout = ({ walletData, setWalletData, updateWalletData }) => {
+export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCode, setPinCode }) => {
     const [screen, setScreen] = useState(null);
 
 
@@ -40,7 +40,10 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData }) => {
                           setWalletData={ setWalletData }
                           walletData={ walletData }
                           onHomePress={ screenSelect }
-                          updateWalletData={ updateWalletData }/>
+                          updateWalletData={ updateWalletData }
+                          pinCode={ pinCode }
+                          setPinCode={ setPinCode }
+            />
         );
     }
 

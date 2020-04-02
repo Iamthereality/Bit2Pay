@@ -24,18 +24,34 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData }) => {
 
     const setUser = () => {
         if (currency !== null && id !== null && publicKey !== null) {
-            setWalletData((prevState) => [
-                {
-                    walletCurrency: currency,
-                    walletID: id,
-                    walletPublicKey: publicKey,
-                    id: Date.now()
-                    // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
-                    // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
-                    // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
-                },
-                ...prevState
-            ]);
+            setWalletData((prevState) => {
+                if (prevState) {
+                    return [
+                        {
+                            walletCurrency: currency,
+                            walletID: id,
+                            walletPublicKey: publicKey,
+                            id: Date.now()
+                            // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
+                            // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
+                            // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
+                        },
+                        ...prevState
+                    ]
+                } else {
+                    return [
+                        {
+                            walletCurrency: currency,
+                            walletID: id,
+                            walletPublicKey: publicKey,
+                            id: Date.now()
+                            // walletID: 'PRIZM-6XVX-S5KU-H35H-A38YM',
+                            // walletPublicKey: 'ID-8f0826912bb84d4cbb39ab74284016b9d988fe6b7dd44c529a55b8a42d2531cc',
+                            // walletPrivateKey: 'b28b30c9a28346eea218e39d62ec422ab4b398096bb74a2c99d595d17c0f7982'
+                        }
+                    ]
+                }
+            });
             setIsReadyToAdd(false);
         } else {
             Alert.alert(`Заполните все обязательные поля`);
