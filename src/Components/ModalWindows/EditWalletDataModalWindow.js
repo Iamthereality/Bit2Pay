@@ -9,7 +9,7 @@ import { RegularText } from "../UI/RegularText";
 import { InputForm } from "../UI/InputForm";
 import { ThinText } from "../UI/ThinText";
 
-export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, updateWalletData }) => {
+export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, updateWalletData, deleteWalletData }) => {
     const [id, setID] = useState(wallet.walletID);
     const [publicKey, setPublicKey] = useState(wallet.walletPublicKey);
 
@@ -67,6 +67,10 @@ export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, upda
                         { `Очистить` }
                     </AppButton>
                     <AppButton  buttonStyle={ styles.button }
+                                onPress={ () => deleteWalletData(wallet.id) }>
+                        { `Удалить` }
+                    </AppButton>
+                    <AppButton  buttonStyle={ styles.button }
                                 onPress={ save }>
                         { `Сохранить` }
                     </AppButton>
@@ -110,6 +114,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     button: {
-        width: '40%'
+        width: '30%'
     }
 });

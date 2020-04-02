@@ -6,20 +6,23 @@ import { ThinText } from "./UI/ThinText";
 import { RegularText } from "./UI/RegularText";
 import { EditWalletDataModalWindow } from "./ModalWindows/EditWalletDataModalWindow";
 
-export const WalletsList = ({ item, updateWalletData }) => {
+export const WalletsList = ({ item, updateWalletData, deleteWalletData }) => {
     const Wrapper = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
     const [visible, setVisibility] = useState(false);
     return (
         <View style={ styles.container }>
             <Wrapper activeOpacity={ 0.7 }
                      onPress={ () => setVisibility(true) }
+                     onLongPress={ () => deleteWalletData(item.id) }
                      background={ TouchableNativeFeedback.Ripple(THEME.WHITE_COLOR, true) }
             >
                 <View style={ styles.innerContainer }>
                     <EditWalletDataModalWindow visible={ visible }
                                                wallet={ item }
                                                setVisibility={ setVisibility }
-                                               updateWalletData={ updateWalletData }/>
+                                               updateWalletData={ updateWalletData }
+                                               deleteWalletData={ deleteWalletData }
+                    />
                     <RegularText style={ styles.title }>
                         { item.walletCurrency }
                     </RegularText>

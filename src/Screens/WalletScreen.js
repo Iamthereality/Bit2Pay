@@ -11,7 +11,7 @@ import { WalletsList } from '../Components/WalletsList';
 import { PinCodeModalWindow } from "../Components/ModalWindows/PinCodeModalWindow";
 import { EditPinCodeModalWindow } from "../Components/ModalWindows/EditPinCodeModalWindow";
 
-export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData, pinCode, setPinCode }) => {
+export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData, pinCode, setPinCode, deleteWalletData, setWallet }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
     const [pinPadIsVisible, setPinPadIsVisible] = useState(true);
     const [editPinScreenIsVisible, setEditPinScreenIsVisible] = useState(false);
@@ -64,7 +64,9 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
                               renderItem={
                                   ({ item }) => (
                                       <WalletsList item={ item }
-                                                   updateWalletData={ updateWalletData }/>
+                                                   updateWalletData={ updateWalletData }
+                                                   deleteWalletData={ deleteWalletData }
+                                      />
                                   )
                               }
                     />
@@ -75,7 +77,7 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
 
     if (isReadyToAdd) {
         content = (
-            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd }/>
+            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd } setWallet={ setWallet }/>
         );
     }
 

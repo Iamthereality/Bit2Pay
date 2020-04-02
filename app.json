@@ -7,7 +7,7 @@
     "platforms": [
       "android"
     ],
-    "version": "0.6.6",
+    "version": "0.7.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,11 +24,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.homesoftdev.prizm-qr",
-      "buildNumber": "0.6.6"
+      "buildNumber": "0.7.8"
     },
     "android": {
       "package": "com.homesoftdev.prizm_qr",
-      "versionCode": 3,
+      "versionCode": 6,
       "permissions": [
         "WRITE_EXTERNAL_STORAGE"
       ]

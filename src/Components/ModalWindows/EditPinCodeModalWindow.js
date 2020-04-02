@@ -79,23 +79,21 @@ export const EditPinCodeModalWindow = ({ visible, setVisibility, setPinCode }) =
                         </AppButton>
                     </View>
                     <View style={ styles.row }>
-                        <AppButton buttonStyle={ { ...styles.button, borderColor: 'transparent' } }>
+                        <AppButton buttonStyle={ { ...styles.button, borderColor: 'transparent' } }
+                                   onPress={ () => setPin('') }>
+                            <MaterialIcons name={ 'clear' } size={ 25 }/>
                         </AppButton>
                         <AppButton buttonStyle={ styles.button }
                                    onPress={ () => setPin(`${ pin }${ 0 }`) }>
                             { '0' }
                         </AppButton>
-                        <AppButton buttonStyle={ styles.button }
+                        <AppButton buttonStyle={ { ...styles.button, borderColor: 'transparent' } }
                                    onPress={ () => setPin(pin.substring(0, pin.length - 1)) }>
                             <MaterialIcons name={ 'keyboard-backspace' } size={ 25 }/>
                         </AppButton>
                     </View>
                 </View>
                 <View style={ styles.buttonContainer }>
-                    <AppButton buttonStyle={ styles.actionButton }
-                        onPress={ () => setPin('') }>
-                        { 'Очистить' }
-                    </AppButton>
                     <AppButton buttonStyle={ styles.actionButton }
                         onPress={ () => {
                             if (pin !== '') {
@@ -150,7 +148,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'center'
     },
     actionButton: {
         width: '40%'

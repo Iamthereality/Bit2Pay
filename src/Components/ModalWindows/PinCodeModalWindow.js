@@ -5,6 +5,7 @@ import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
 import { ThinText } from "../UI/ThinText";
 import { Header } from "../UI/Header";
+import {MaterialIcons} from "@expo/vector-icons";
 
 export const PinCodeModalWindow = ({ visible, setVisibility, pinCode, onHomePress }) => {
     const [pin, setPin] = useState('');
@@ -72,9 +73,17 @@ export const PinCodeModalWindow = ({ visible, setVisibility, pinCode, onHomePres
                         </AppButton>
                     </View>
                     <View style={ styles.row }>
+                        <AppButton buttonStyle={ { ...styles.button, borderColor: 'transparent' } }
+                                   onPress={ () => setPin('') }>
+                            <MaterialIcons name={ 'clear' } size={ 25 }/>
+                        </AppButton>
                         <AppButton buttonStyle={ styles.button }
                                    onPress={ () => setPin(`${ pin }${ 0 }`) }>
                             { '0' }
+                        </AppButton>
+                        <AppButton buttonStyle={ { ...styles.button, borderColor: 'transparent' } }
+                                   onPress={ () => setPin(pin.substring(0, pin.length - 1)) }>
+                            <MaterialIcons name={ 'keyboard-backspace' } size={ 25 }/>
                         </AppButton>
                     </View>
                 </View>
