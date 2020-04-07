@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
 import { RegularText } from "../UI/RegularText";
+import {SelectWallet} from "../UI/SelectWallet";
 
 
 export const SelectWalletModalWindow = ({ walletData, setVisibility, visible, setWallet, setWalletSelected, onHomePress }) => {
@@ -28,20 +29,10 @@ export const SelectWalletModalWindow = ({ walletData, setVisibility, visible, se
                 </AppButton>
             </View>
             <FlatList style={ styles.walletsList }
-                      keyExtractor={ item => item.id.toString() }
+                      keyExtractor={ item => item.id }
                       data={ walletData }
-                      renderItem={
-                          ({ item }) => (
-                              <View style={ styles.itemContainer }>
-                                  <RegularText style={ styles.itemLabel }>
-                                      { item.walletCurrency }
-                                  </RegularText>
-                                  <AppButton buttonStyle={ styles.button } onPress={ () => onPress(item) }>
-                                      { item.walletID }
-                                  </AppButton>
-                              </View>
-                          )
-                      }/>
+                      renderItem={ ({ item }) => <SelectWallet item={ item } onPress={ onPress } /> }
+            />
         </>
     );
 
@@ -102,18 +93,6 @@ const styles = StyleSheet.create({
     },
     walletsList: {
         width: '100%',
-    },
-    itemContainer: {
-        width: '100%',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'center'
-    },
-    itemLabel: {
-        padding: 10
-    },
-    button: {
-        width: '100%'
     },
     addWallet: {
         marginVertical: 30,

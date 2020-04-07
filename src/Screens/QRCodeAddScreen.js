@@ -11,7 +11,7 @@ import { QRModalWindow } from "../Components/ModalWindows/QRModalWindow";
 import { SelectWalletModalWindow } from "../Components/ModalWindows/SelectWalletModalWindow";
 import { RegularText } from "../Components/UI/RegularText";
 
-export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
+export const QRCodeAddScreen = ({ walletData, onHomePress, title, addTransaction }) => {
     const [walletSelected, setWalletSelected] = useState(false);
     const [wallet, setWallet] = useState(null);
     const [walletsListVisibility, setWalletsListVisibility] = useState(false);
@@ -70,7 +70,10 @@ export const QRCodeAddScreen = ({ walletData, onHomePress, title }) => {
                                            setVisibility={ setVisibility }
                                            visible={ visible }
                                            clear={ clear }
-                                           amount={ amount }/> : null;
+                                           amount={ amount }
+                                           addTransaction={ addTransaction }
+    /> : null;
+
     return (
         <AppScreen>
             <Header onHomePress={ onHomePress }>

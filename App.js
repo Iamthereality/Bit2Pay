@@ -27,6 +27,15 @@ export default function App() {
         }
     };
 
+    const setPinCode = async (pin) => {
+        setNewPinCode(pin);
+        try {
+            await AsyncStorage.setItem('pinCode', pin);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     useEffect(() => {
         (async () => {
             try {
@@ -39,18 +48,6 @@ export default function App() {
                 console.log(e);
             }
         })();
-    }, []);
-
-    const setPinCode = async (pin) => {
-        setNewPinCode(pin);
-        try {
-            await AsyncStorage.setItem('pinCode', pin);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
         (async () => {
             try {
                 const value = await AsyncStorage.getItem('pinCode');
@@ -72,11 +69,13 @@ export default function App() {
         );
     }
 
-    const updateWalletData = (id, walletID, publicKey) => {
+    const updateWalletData = (id, address, prizmID = null) => {
         setWalletData((old) => old.map((wallet) => {
                 if (wallet.id === id) {
-                    wallet.walletID = walletID;
-                    wallet.walletPublicKey = publicKey;
+                    wallet.walletAddress = address;
+                    if (prizmID) {
+                        wallet.prizmID = prizmID;
+                    }
                 }
                 return wallet;
             })
@@ -107,6 +106,50 @@ export default function App() {
         );
     };
 
+    const addTransaction = (id, transaction) => {
+        setWalletData((old) => old.map((wallet) => {
+                if (wallet.id === id) {
+                    if (wallet.transactions === null || wallet.transactions === undefined) {
+                        wallet.transactions = [transaction];
+                    } else if (wallet.transactions){
+                        wallet.transactions = [transaction, ...wallet.transactions];
+                    }
+                }
+                return wallet;
+            })
+        );
+        setWallet(walletData);
+    };
+
+    const deleteTransaction = (walletID, txID) => {
+        const selectedWallet = walletData.find((wallet) => wallet.id === walletID);
+        Alert.alert(
+            `История транзакций выбранного кошелька будет удалена`,
+            `Вы уверены, что хотите удалить историю кошелька "${ selectedWallet.walletCurrency }?"`,
+            [
+                {
+                    text: 'Нет',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Да', onPress: () => {
+                        setWalletData((prevState) => {
+                            // setWallet(prevState.filter((wallet) => wallet.transactions !== transactions));
+                            console.log(prevState.filter((wallet) => {
+                                const txToRemove = wallet.transactions.find((tx) => tx.id === txID);
+                                return txToRemove.filter((prev) => {
+
+                                });
+                            }));
+                            return prevState;
+                        });
+                    }
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+
     return (
         <MainLayout walletData={ walletData }
                     setWalletData={ setWalletData }
@@ -115,6 +158,8 @@ export default function App() {
                     setPinCode={ setPinCode }
                     deleteWalletData={ deleteWalletData }
                     setWallet={ setWallet }
+                    addTransaction={ addTransaction }
+                    deleteTransaction={ deleteTransaction }
         />
     );
 };

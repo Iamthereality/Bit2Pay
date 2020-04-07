@@ -10,28 +10,73 @@ import { InputForm } from "../UI/InputForm";
 import { ThinText } from "../UI/ThinText";
 
 export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, updateWalletData, deleteWalletData }) => {
-    const [id, setID] = useState(wallet.walletID);
-    const [publicKey, setPublicKey] = useState(wallet.walletPublicKey);
+    const [address, setAddress] = useState(wallet.walletAddress);
+    const [prizmID, setPrizmID] = useState(() => {
+        if (wallet.prizmID !== null) {
+            return wallet.prizmID
+        } else {
+            return null;
+        }
+    });
+    let content;
 
     const save = () => {
-        if (id !== '' || publicKey !== '') {
-            updateWalletData(wallet.id, id, publicKey);
-            setVisibility(false);
-        } else if (id === '' || publicKey === '') {
-            Alert.alert('Поля не могут быть пустыми!');
+        if (wallet.walletCurrency === 'Ethereum' || wallet.walletCurrency === 'Bitcoin') {
+            if (address !== '') {
+                updateWalletData(wallet.id, address);
+                setVisibility(false);
+            } else if (address === '') {
+                Alert.alert('Заполните поле "Адрес"!');
+            }
+        } else if (wallet.walletCurrency === 'Prizm') {
+            if (address !== '' && prizmID !== '') {
+                updateWalletData(wallet.id, address, prizmID);
+                setVisibility(false);
+            } else if (address === '' && prizmID !== '') {
+                Alert.alert('Заполните поле "Публичный ключ кошелька"!');
+            } else if (prizmID === '' && address !== '') {
+                Alert.alert('Заполните поле "ID кошелька"!');
+            } else if (prizmID === '' && address === '') {
+                Alert.alert('Заполните все обязательные поля!');
+            }
         }
     };
 
     const clear = () => {
-        setID('');
-        setPublicKey('');
+        setAddress('');
+        setPrizmID('')
     };
 
     const close = () => {
-        setID(wallet.walletID);
-        setPublicKey(wallet.walletPublicKey);
+        setAddress(wallet.walletAddress);
+        setPrizmID(wallet.prizmID);
         setVisibility(false);
     };
+
+    if (wallet.walletCurrency === 'Ethereum' || wallet.walletCurrency === 'Bitcoin') {
+        content = (
+            <>
+                <ThinText>
+                    { `Адрес кошелька ${wallet.walletCurrency}` }
+                </ThinText>
+                <InputForm value={ address } onChangeText={ setAddress } placeholder={ address }/>
+            </>
+        );
+    }
+    if (wallet.walletCurrency === 'Prizm') {
+        content = (
+            <>
+                <ThinText>
+                    { `ID кошелька ${wallet.walletCurrency}` }
+                </ThinText>
+                <InputForm value={ prizmID } onChangeText={ setPrizmID } placeholder={ prizmID }/>
+                <ThinText>
+                    { `Публичный ключ кошелька ${wallet.walletCurrency}` }
+                </ThinText>
+                <InputForm value={ address } onChangeText={ setAddress } placeholder={ address }/>
+            </>
+        );
+    }
 
     return (
         <Modal animationType={ 'slide' }
@@ -40,7 +85,7 @@ export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, upda
             <View style={ styles.container }>
                 <View style={ styles.header }>
                     <RegularText style={ { fontSize: 22 } }>
-                        { wallet.walletCurrency }
+                        { `Редактировать` }
                     </RegularText>
                     <AppButton buttonStyle={ styles.closeButton }
                                onPress={ close }>
@@ -49,16 +94,7 @@ export const EditWalletDataModalWindow = ({ setVisibility, wallet, visible, upda
                 </View>
                 <View style={ styles.inputContainer }>
                     <View>
-                        <ThinText>
-                            { `Индентификатор` }
-                        </ThinText>
-                        <InputForm value={ id } onChangeText={ setID } placeholder={ id }/>
-                    </View>
-                    <View>
-                        <ThinText>
-                            { `Публичный ключ` }
-                        </ThinText>
-                        <InputForm value={ publicKey } onChangeText={ setPublicKey } placeholder={ publicKey }/>
+                        { content }
                     </View>
                 </View>
                 <View style={ styles.buttonContainer }>

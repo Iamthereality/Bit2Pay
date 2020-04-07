@@ -6,14 +6,15 @@ import QRCode from 'react-native-qrcode-svg';
 import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
 import { RegularText } from "../UI/RegularText";
-import  Prizm  from "../../Services/Prizm";
+import CryptAPI from "../../Services/CryptAPI";
 
-export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount }) => {
-    const prizm = new Prizm();
+
+export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount, addTransaction }) => {
+    const cryptAPI = new CryptAPI();
     const [price, setPrice] = useState(null);
 
     useEffect(() => {
-        prizm.get_currency_prices()
+        cryptAPI.get_currency_prices()
             .then((resp) => currencyAmount(resp, qrData))
             .catch((e) => console.log(e));
     }, []);
@@ -34,7 +35,7 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
         };
 
         if (wallet.walletCurrency === 'Prizm') {
-           priceSetter('PZM/RUB');
+            priceSetter('PZM/RUB');
         }
         if (wallet.walletCurrency === 'Ethereum') {
             priceSetter('ETH/RUB');
@@ -69,39 +70,38 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
                 />
             </View>
         </View>
-    );
+    ), cryptoAmount;
 
     if (price) {
-        let cryptoAmount, percentage, sum;
+        let percentage, sum;
 
-        if (qrData.walletCurrency === 'Prizm') {
-            cryptoAmount = parseFloat(amount / price).toFixed(3);
-            percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(3);
-            sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(3);
-        } else if (qrData.walletCurrency === 'Ethereum' || qrData.walletCurrency === 'Bitcoin') {
-            cryptoAmount = parseFloat(amount / price).toFixed(10);
-            percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(10);
-            sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(10);
-        }
+        const getSum = (roundTo) => {
+            cryptoAmount = parseFloat(amount / price).toFixed(roundTo);
+            percentage = parseFloat((cryptoAmount * 10) / 100).toFixed(roundTo);
+            sum = (parseFloat(cryptoAmount) + parseFloat(percentage)).toFixed(roundTo);
+        };
 
         const codeGenerator = (qrData) => {
             if (qrData.walletCurrency === 'Prizm') {
-                return `${ qrData.walletID }:${ qrData.walletPublicKey }:${ sum }`;
+                getSum(3);
+                return `${ qrData.prizmID }:${ qrData.walletAddress }:${ sum }`;
             }
             if (qrData.walletCurrency === 'Ethereum') {
-                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletPublicKey }?value=${ sum }`;
+                getSum(10);
+                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletAddress }?value=${ sum }`;
             }
             if (qrData.walletCurrency === 'Bitcoin') {
-                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletPublicKey }?amount=${ sum }`;
+                getSum(10);
+                return `${ qrData.walletCurrency.toLowerCase() }:${ qrData.walletAddress }?amount=${ sum }`;
             }
         };
 
         content = (
             <>
-            <QRCode value={ codeGenerator(qrData) }
-                    size={ Dimensions.get('window').width - 40 }
-                    color={ THEME.WHITE_COLOR }
-                    backgroundColor={ THEME.BLACK_COLOR }/>
+                <QRCode value={ codeGenerator(qrData) }
+                        size={ Dimensions.get('window').width - 40 }
+                        color={ THEME.WHITE_COLOR }
+                        backgroundColor={ THEME.BLACK_COLOR }/>
                 <RegularText>
                     { `Сумма: ${ sum } ${qrData.walletCurrency}` }
                 </RegularText>
@@ -113,19 +113,24 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount })
     }
 
     return (
-       <Modal animationType={ 'slide' }
-              transparent={ false }
-              visible={ visible }>
-           <View style={ styles.container }>
-               { content }
-               <AppButton onPress={ () => {
-                   setVisibility(false);
-                   clear();
-               } }>
-                   { 'Готово' }
-               </AppButton>
-           </View>
-       </Modal>
+        <Modal animationType={ 'slide' }
+               transparent={ false }
+               visible={ visible }>
+            <View style={ styles.container }>
+                { content }
+                <AppButton onPress={ () => {
+                    addTransaction(qrData.id, {
+                        id: Date.now(),
+                        cryptoAmount: cryptoAmount,
+                        amountRUB: amount
+                    });
+                    setVisibility(false);
+                    clear();
+                } }>
+                    { 'Готово' }
+                </AppButton>
+            </View>
+        </Modal>
     );
 };
 

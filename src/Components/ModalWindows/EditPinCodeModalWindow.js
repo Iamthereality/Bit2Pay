@@ -96,7 +96,7 @@ export const EditPinCodeModalWindow = ({ visible, setVisibility, setPinCode }) =
                 <View style={ styles.buttonContainer }>
                     <AppButton buttonStyle={ styles.actionButton }
                         onPress={ () => {
-                            if (pin !== '') {
+                            if (pin !== '' && pin.length === 6) {
                                 setPinCode(pin);
                                 setVisibility(false);
                             } else {

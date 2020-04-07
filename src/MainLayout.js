@@ -8,7 +8,7 @@ import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
 
-export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCode, setPinCode, deleteWalletData, setWallet }) => {
+export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCode, setPinCode, deleteWalletData, setWallet, transactions, setTransactions, addTransaction }) => {
     const [screen, setScreen] = useState(null);
 
 
@@ -30,7 +30,7 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCod
 
     if (screen === 'QR') {
         content = (
-            <QRCodeAddScreen title={ 'Новый платёж' } walletData={ walletData } onHomePress={ screenSelect }/>
+            <QRCodeAddScreen title={ 'Новый платёж' } walletData={ walletData } onHomePress={ screenSelect } addTransaction={ addTransaction }/>
         );
     }
 
@@ -51,7 +51,12 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCod
 
     if (screen === 'HISTORY') {
         content = (
-            <HistoryScreen title={ 'История транзакций' } onHomePress={ screenSelect }/>
+            <HistoryScreen title={ 'История транзакций' }
+                           onHomePress={ screenSelect }
+                           walletData={ walletData }
+                           transactions={ transactions }
+                           setTransactions={ setTransactions }
+            />
         );
     }
 

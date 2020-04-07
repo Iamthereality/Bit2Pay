@@ -16,9 +16,25 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
     const [pinPadIsVisible, setPinPadIsVisible] = useState(true);
     const [editPinScreenIsVisible, setEditPinScreenIsVisible] = useState(false);
 
-    let content, pinPad;
+    const addWallet = (
+        <AppButton buttonStyle={ styles.button }
+                   textStyle={ { fontSize: 20 } }
+                   onPress={ () => setIsReadyToAdd(true) }>
+            <Feather name={ 'plus' } size={ 20 }/>
+            { ' адрес' }
+        </AppButton>
+    );
+
+
+    let content, pinPad, editPin;
 
     if (pinCode !== null) {
+        editPin = (
+            <AppButton buttonStyle={ styles.button }
+                       onPress={ () => setEditPinScreenIsVisible(true) }>
+                { 'Сменить PIN' }
+            </AppButton>
+        );
         pinPad = (
             <>
                 <PinCodeModalWindow setVisibility={ setPinPadIsVisible }
@@ -28,6 +44,12 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
             </>
         );
     } else if (pinCode === null) {
+        editPin = (
+            <AppButton buttonStyle={ styles.button }
+                       onPress={ () => setEditPinScreenIsVisible(true) }>
+                { 'Задать PIN' }
+            </AppButton>
+        );
         pinPad = null;
     }
 
@@ -35,31 +57,19 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
         if (walletData.length === 0) {
             content = (
                 <View style={ styles.buttonContainer }>
-                    <AppButton buttonStyle={ styles.button }
-                               onPress={ () => setIsReadyToAdd(true) }>
-                        { 'Добавить кошелёк' }
-                    </AppButton>
-                    <AppButton buttonStyle={ { width: 50 } }
-                               onPress={ () => setEditPinScreenIsVisible(true) }>
-                        <Feather name={ 'settings' } size={ 20 }/>
-                    </AppButton>
+                    { addWallet }
+                    { editPin }
                 </View>
             );
         } else if (walletData.length !== 0) {
             content = (
                 <>
                     <View style={ styles.buttonContainer }>
-                        <AppButton buttonStyle={ styles.button }
-                                   onPress={ () => setIsReadyToAdd(true) }>
-                            { 'Добавить кошелёк' }
-                        </AppButton>
-                        <AppButton buttonStyle={ { width: 50 } }
-                                   onPress={ () => setEditPinScreenIsVisible(true) }>
-                            <Feather name={ 'settings' } size={ 20 }/>
-                        </AppButton>
+                        { addWallet }
+                        { editPin }
                     </View>
                     <FlatList style={ styles.walletsList }
-                              keyExtractor={ item => item.id.toString() }
+                              keyExtractor={ item => item.id }
                               data={ walletData }
                               renderItem={
                                   ({ item }) => (
@@ -77,7 +87,10 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
 
     if (isReadyToAdd) {
         content = (
-            <AddForm setWalletData={ setWalletData } setIsReadyToAdd={ setIsReadyToAdd } setWallet={ setWallet }/>
+            <AddForm setWalletData={ setWalletData }
+                     setIsReadyToAdd={ setIsReadyToAdd }
+                     setWallet={ setWallet }
+            />
         );
     }
 
@@ -110,14 +123,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     buttonContainer: {
-        marginVertical: 10,
+        marginTop: 10,
+        marginBottom: 20,
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     button: {
-        width: '60%'
+        width: '45%'
     },
     walletsList: {
         width: '100%',

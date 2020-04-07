@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Modal, View, StyleSheet } from 'react-native';
+import { Modal, View, StyleSheet, Alert } from 'react-native';
+
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
 import { ThinText } from "../UI/ThinText";
 import { Header } from "../UI/Header";
-import {MaterialIcons} from "@expo/vector-icons";
 
 export const PinCodeModalWindow = ({ visible, setVisibility, pinCode, onHomePress }) => {
     const [pin, setPin] = useState('');
@@ -13,6 +14,7 @@ export const PinCodeModalWindow = ({ visible, setVisibility, pinCode, onHomePres
     if (pinCode === pin) {
         setVisibility(false);
     } else if (pinCode.length === pin.length && pinCode !== pin) {
+        Alert.alert('Введён не верный PIN!');
         setPin('');
     }
 
