@@ -7,6 +7,7 @@ import CryptAPI from "../Services/CryptAPI";
 import {RegularText} from "../Components/UI/RegularText";
 
 export const MainScreen = ({ title }) => {
+    const [error, setError] = useState(false);
     const [pzmPrice, setPzmPrice] = useState(null);
     const [ethPrice, setEthPrice] = useState(null);
     const [btcPrice, setBtcPrice] = useState(null);
@@ -15,7 +16,6 @@ export const MainScreen = ({ title }) => {
     const cryptAPI = new CryptAPI();
     const spinValue = new Animated.Value(0);
     const loadingSpinValue = new Animated.Value(0);
-
 
     useEffect(() => {
         cryptAPI.get_prices()
@@ -32,7 +32,7 @@ export const MainScreen = ({ title }) => {
                     }
                 })
             )
-            .catch((e) => console.log(e));
+            .catch(() => setError(true));
     }, []);
 
     if (!pzmPrice && !ethPrice && !btcPrice) {
@@ -76,6 +76,16 @@ export const MainScreen = ({ title }) => {
                 <RegularText>
                     { `1 Bitcoin = ${ btcPrice } ₽` }
                 </RegularText>
+            </View>
+        );
+    }
+
+    if (error) {
+        content = (
+            <View style={ styles.loading }>
+                <ThinText>
+                    { 'Упс. Что-то пошло не так...' }
+                </ThinText>
             </View>
         );
     }

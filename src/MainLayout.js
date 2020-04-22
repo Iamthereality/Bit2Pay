@@ -7,13 +7,32 @@ import { QRCodeAddScreen } from "./Screens/QRCodeAddScreen";
 import { WalletScreen } from "./Screens/WalletScreen";
 import { HistoryScreen } from "./Screens/HistoryScreen";
 import { THEME } from "./THEME";
+import {InitialScreen} from "./Screens/InitialScreen";
+import {InitialModalWindow} from "./Components/ModalWindows/InitialiModalWindow";
 
-export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCode, setPinCode, deleteWalletData, setWallet, transactions, setTransactions, addTransaction }) => {
+export const MainLayout = ({
+        walletData,
+        setWalletData,
+        updateWalletData,
+        pinCode,
+        setPinCode,
+        deleteWalletData,
+        setWallet,
+        deleteTransactions,
+        addTransaction,
+        visibility,
+        setVisibility,
+        accountData,
+        setAccountData,
+        setUserAccount,
+        updateAccountData,
+        initialModal,
+        setInitialModal
+    }) => {
     const [screen, setScreen] = useState(null);
 
-
     let content = (
-        <MainScreen title={ 'Платёжный клиент Prizm' } />
+        <MainScreen title={ 'Bit2Pay' }/>
     );
 
     const screenSelect = (button) => {
@@ -30,7 +49,11 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCod
 
     if (screen === 'QR') {
         content = (
-            <QRCodeAddScreen title={ 'Новый платёж' } walletData={ walletData } onHomePress={ screenSelect } addTransaction={ addTransaction }/>
+            <QRCodeAddScreen title={ 'Новый платёж' }
+                             walletData={ walletData }
+                             onHomePress={ screenSelect }
+                             addTransaction={ addTransaction }
+            />
         );
     }
 
@@ -45,6 +68,8 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCod
                           setPinCode={ setPinCode }
                           deleteWalletData={ deleteWalletData }
                           setWallet={ setWallet }
+                          accountData={ accountData }
+                          updateAccountData={ updateAccountData }
             />
         );
     }
@@ -54,16 +79,34 @@ export const MainLayout = ({ walletData, setWalletData, updateWalletData, pinCod
             <HistoryScreen title={ 'История транзакций' }
                            onHomePress={ screenSelect }
                            walletData={ walletData }
-                           transactions={ transactions }
-                           setTransactions={ setTransactions }
+                           deleteTransactions={ deleteTransactions }
+                           visibility={ visibility }
+                           setVisibility={ setVisibility }
             />
         );
     }
 
-    return (
-        <View style={ styles.container }>
+    const activeScreen = accountData.length === 0 ?
+        <InitialScreen setAccountData={ setAccountData }
+                       initialModal={ initialModal }
+                       setInitialModal={ setInitialModal }
+                       setUserAccount={ setUserAccount }
+        />
+    : (
+        <>
+            <InitialModalWindow visible={ initialModal }
+                                setVisibility={ setInitialModal }
+                                screenSelect={ screenSelect }
+            />
             { content }
             <Navbar screenSelect={ screenSelect }/>
+        </>
+    );
+
+    return (
+        <View style={ styles.container }>
+            { activeScreen }
+
         </View>
     );
 };

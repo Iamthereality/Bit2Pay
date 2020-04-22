@@ -7,16 +7,18 @@ import { THEME } from "../../THEME";
 import { AppButton } from "../UI/AppButton";
 import { RegularText } from "../UI/RegularText";
 import CryptAPI from "../../Services/CryptAPI";
+import {ThinText} from "../UI/ThinText";
 
 
 export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount, addTransaction }) => {
     const cryptAPI = new CryptAPI();
     const [price, setPrice] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         cryptAPI.get_currency_prices()
             .then((resp) => currencyAmount(resp, qrData))
-            .catch((e) => console.log(e));
+            .catch(() => setError(true));
     }, []);
 
     const currencyAmount = (response, wallet) => {
@@ -69,6 +71,9 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount, a
                                 source={ require('../../../assets/loading.png') }
                 />
             </View>
+            <ThinText>
+                { 'Пожалуйста подождите...' }
+            </ThinText>
         </View>
     ), cryptoAmount;
 
@@ -112,6 +117,16 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount, a
         );
     }
 
+    if (error) {
+        content = (
+            <View>
+                <ThinText>
+                    { 'Упс. Что-то пошло не так' }
+                </ThinText>
+            </View>
+        );
+    }
+
     return (
         <Modal animationType={ 'slide' }
                transparent={ false }
@@ -119,11 +134,13 @@ export const QRModalWindow = ({ setVisibility, visible, qrData, clear, amount, a
             <View style={ styles.container }>
                 { content }
                 <AppButton onPress={ () => {
-                    addTransaction(qrData.id, {
-                        id: Date.now(),
-                        cryptoAmount: cryptoAmount,
-                        amountRUB: amount
-                    });
+                    if (price) {
+                        addTransaction(qrData.id, {
+                            id: Date.now(),
+                            cryptoAmount: cryptoAmount,
+                            amountRUB: amount
+                        });
+                    }
                     setVisibility(false);
                     clear();
                 } }>

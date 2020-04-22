@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
 import { AppScreen } from "../Components/UI/AppScreen";
 import { Header } from '../Components/UI/Header';
 import { ThinText } from "../Components/UI/ThinText";
-import { AppButton } from "../Components/UI/AppButton";
 import { SelectWallet } from "../Components/UI/SelectWallet";
-import {THEME} from "../THEME";
-import {TransactionsHistory} from "../Components/ModalWindows/TransactionsHistory";
+import { TransactionsHistory } from "../Components/ModalWindows/TransactionsHistory";
 
-export const HistoryScreen = ({ onHomePress, style, title, walletData }) => {
+export const HistoryScreen = ({ onHomePress, style, title, walletData, deleteTransactions, visibility, setVisibility }) => {
     const [wallet, setWallet] = useState(null);
-    const [visible, setVisibility] = useState(false);
 
     const onWalletPress = (item) => {
         setWallet(item);
         setVisibility(true);
     };
 
-    const modalWindow = wallet ? <TransactionsHistory wallet={ wallet } setVisibility={ setVisibility } visible={ visible }/> : null;
+    const modalWindow = wallet ?
+        <TransactionsHistory wallet={ wallet }
+                             setVisibility={ setVisibility }
+                             visibility={ visibility }
+                             deleteTransactions={ deleteTransactions }
+        /> : null;
 
     let content = (
         <>

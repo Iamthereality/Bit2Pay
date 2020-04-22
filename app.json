@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Prizm QR",
-    "slug": "PRISMqrPAY",
+    "name": "Bit2Pay",
+    "slug": "Bit2Pay",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
       "android"
     ],
-    "version": "0.7.8",
+    "version": "1.2.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,12 +23,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.homesoftdev.prizm-qr",
-      "buildNumber": "0.7.8"
+      "bundleIdentifier": "com.homesoftdev.bit2pay",
+      "buildNumber": "1.2.4"
     },
     "android": {
-      "package": "com.homesoftdev.prizm_qr",
-      "versionCode": 6,
+      "package": "com.homesoftdev.bit2pay",
+      "versionCode": 14,
       "permissions": [
         "WRITE_EXTERNAL_STORAGE"
       ]

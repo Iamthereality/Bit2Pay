@@ -6,6 +6,7 @@ import { AppLoading } from "expo";
 
 import { MainLayout } from "./src/MainLayout";
 
+
 async function loadApplication() {
     await Font.loadAsync({
         'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
@@ -16,8 +17,19 @@ async function loadApplication() {
 
 export default function App() {
     const [isReady, setIsReady] = useState(false);
-    const [pinCode, setNewPinCode] = useState(null);
+    const [accountData, setAccountData] = useState([]);
     const [walletData, setWalletData] = useState([]);
+    const [pinCode, setNewPinCode] = useState(null);
+    const [visibility, setVisibility] = useState(false);
+    const [initialModal, setInitialModal] = useState(false);
+
+    const setUserAccount = async (userAccountData) => {
+        try {
+            await AsyncStorage.setItem('userAccountData', JSON.stringify(userAccountData));
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const setWallet = async (walletData) => {
         try {
@@ -39,23 +51,30 @@ export default function App() {
     useEffect(() => {
         (async () => {
             try {
+                const value = await AsyncStorage.getItem('userAccountData');
+                const parsedData = JSON.parse(value);
+                if (parsedData && parsedData.length !== 0) {
+                    setAccountData(parsedData);
+                }
+            } catch(e) {
+                console.log(`there's no account data`);
+            }
+            try {
                 const value = await AsyncStorage.getItem('walletsList');
                 const parsedData = JSON.parse(value);
-                if (parsedData.length !== 0) {
+                if (parsedData && parsedData.length !== 0) {
                     setWalletData(parsedData);
                 }
             } catch(e) {
-                console.log(e);
+                console.log(`there's no wallet data`);
             }
-        })();
-        (async () => {
             try {
                 const value = await AsyncStorage.getItem('pinCode');
                 if (value !== null) {
                     setNewPinCode(value);
                 }
             } catch(e) {
-                console.log(e);
+                console.log(`there's no PIN code`);
             }
         })();
     }, []);
@@ -68,6 +87,20 @@ export default function App() {
             />
         );
     }
+
+    const updateAccountData = (id, userTaxNumber, concat, phone, email) => {
+        setAccountData((old) => old.map((accountData) => {
+                if (accountData.id === id) {
+                    accountData.userTaxNumber = userTaxNumber;
+                    accountData.concat = concat;
+                    accountData.phone = phone;
+                    accountData.email = email;
+                }
+                return accountData;
+            })
+        );
+        setUserAccount(accountData);
+    };
 
     const updateWalletData = (id, address, prizmID = null) => {
         setWalletData((old) => old.map((wallet) => {
@@ -121,7 +154,7 @@ export default function App() {
         setWallet(walletData);
     };
 
-    const deleteTransaction = (walletID, txID) => {
+    const deleteTransactions = (walletID) => {
         const selectedWallet = walletData.find((wallet) => wallet.id === walletID);
         Alert.alert(
             `История транзакций выбранного кошелька будет удалена`,
@@ -134,14 +167,26 @@ export default function App() {
                 {
                     text: 'Да', onPress: () => {
                         setWalletData((prevState) => {
-                            // setWallet(prevState.filter((wallet) => wallet.transactions !== transactions));
-                            console.log(prevState.filter((wallet) => {
-                                const txToRemove = wallet.transactions.find((tx) => tx.id === txID);
-                                return txToRemove.filter((prev) => {
-
-                                });
-                            }));
-                            return prevState;
+                            const filtered =  prevState.filter((wallet) => wallet.id !== walletID);
+                            let updatedWallet;
+                            if (selectedWallet.walletCurrency === 'Prizm') {
+                                updatedWallet = {
+                                    id: selectedWallet.id,
+                                    prizmID: selectedWallet.prizmID,
+                                    walletAddress: selectedWallet.walletAddress,
+                                    walletCurrency: selectedWallet.walletCurrency
+                                }
+                            } else {
+                                updatedWallet = {
+                                    id: selectedWallet.id,
+                                    walletAddress: selectedWallet.walletAddress,
+                                    walletCurrency: selectedWallet.walletCurrency
+                                }
+                            }
+                            filtered.push(updatedWallet);
+                            setWallet(filtered);
+                            setVisibility(false);
+                            return filtered;
                         });
                     }
                 },
@@ -159,7 +204,15 @@ export default function App() {
                     deleteWalletData={ deleteWalletData }
                     setWallet={ setWallet }
                     addTransaction={ addTransaction }
-                    deleteTransaction={ deleteTransaction }
+                    deleteTransactions={ deleteTransactions }
+                    visibility={ visibility }
+                    setVisibility={ setVisibility }
+                    accountData={ accountData }
+                    setAccountData={ setAccountData }
+                    setUserAccount={ setUserAccount }
+                    updateAccountData={ updateAccountData }
+                    initialModal={ initialModal }
+                    setInitialModal={ setInitialModal }
         />
     );
 };

@@ -14,7 +14,7 @@ export const WalletsList = ({ item, updateWalletData, deleteWalletData }) => {
     const [balance, setBalance] = useState(0);
 
     if (item.walletCurrency === 'Ethereum') {
-        cryptAPI.get_ethereum_balance('0xeeAA8D2d1DC695A9C696A9713487aaf58174a574')
+        cryptAPI.get_ethereum_balance(item.walletAddress)
             .then((resp) => setBalance(parseInt(resp.result, 16) / 1e18))
             .catch((e) => console.log(e));
     }

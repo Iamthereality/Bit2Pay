@@ -112,15 +112,17 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData, setWallet }) => {
         }
     };
 
-    const clearButton = address !== null && address !== '' ? (
-        <AppButton buttonStyle={ styles.button } onPress={ clear }>
-            { 'Очистить' }
-        </AppButton>
-    ) : null;
-
+    let clearButton = null;
     let content;
 
     if (currency === 'Ethereum' || currency === 'Bitcoin') {
+        if (address !== null && address !== '') {
+            clearButton =  (
+                <AppButton buttonStyle={ styles.button } onPress={ clear }>
+                    { 'Очистить' }
+                </AppButton>
+            );
+        }
         content = (
             <>
                 <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
@@ -139,6 +141,13 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData, setWallet }) => {
     }
 
     if (currency === 'Prizm') {
+        if ((address !== null && address !== '') || (prizmID !== null && prizmID !== '')) {
+            clearButton =  (
+                <AppButton buttonStyle={ styles.button } onPress={ clear }>
+                    { 'Очистить' }
+                </AppButton>
+            );
+        }
         content = (
             <>
                 <CurrencySelect label={ 'Выберите валюту' } setCurrency={ setCurrency } currency={ currency }/>
@@ -156,7 +165,6 @@ export const AddForm = ({ setIsReadyToAdd, setWalletData, setWallet }) => {
             </>
         );
     }
-
 
     if (currency === null) {
        content = (

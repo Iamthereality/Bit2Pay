@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, FlatList, KeyboardAvoidingView  } from 'react-native';
 
-import { Feather } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 
 import { AppScreen } from '../Components/UI/AppScreen';
 import { Header } from '../Components/UI/Header';
@@ -10,11 +10,27 @@ import { AddForm } from '../Components/AddForm';
 import { WalletsList } from '../Components/WalletsList';
 import { PinCodeModalWindow } from "../Components/ModalWindows/PinCodeModalWindow";
 import { EditPinCodeModalWindow } from "../Components/ModalWindows/EditPinCodeModalWindow";
+import {RegularText} from "../Components/UI/RegularText";
+import {EditAccountDataModalWindow} from "../Components/ModalWindows/EditAccountDataModalWindow";
 
-export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, updateWalletData, pinCode, setPinCode, deleteWalletData, setWallet }) => {
+export const WalletScreen = ({
+        onHomePress,
+        setWalletData,
+        walletData,
+        title,
+        updateWalletData,
+        pinCode,
+        setPinCode,
+        deleteWalletData,
+        setWallet,
+        accountData,
+        updateAccountData
+    }) => {
     const [isReadyToAdd, setIsReadyToAdd] = useState(false);
     const [pinPadIsVisible, setPinPadIsVisible] = useState(true);
     const [editPinScreenIsVisible, setEditPinScreenIsVisible] = useState(false);
+    const [settingsIsOpened, setSettingsIsOpened] = useState(false);
+    const [editAccount, setEditAccount] = useState(false);
 
     const addWallet = (
         <AppButton buttonStyle={ styles.button }
@@ -25,12 +41,19 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
         </AppButton>
     );
 
+    let content, pinPad, editPin, screen;
 
-    let content, pinPad, editPin;
+    const settings = (
+        <AppButton buttonStyle={ { borderColor: 'transparent', width: 50 } }
+                   onPress={ () => setSettingsIsOpened(true) }
+        >
+            <Feather name={ 'settings' } size={ 25 }/>
+        </AppButton>
+    );
 
     if (pinCode !== null) {
         editPin = (
-            <AppButton buttonStyle={ styles.button }
+            <AppButton buttonStyle={ styles.settingsButton }
                        onPress={ () => setEditPinScreenIsVisible(true) }>
                 { 'Сменить PIN' }
             </AppButton>
@@ -45,7 +68,7 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
         );
     } else if (pinCode === null) {
         editPin = (
-            <AppButton buttonStyle={ styles.button }
+            <AppButton buttonStyle={ styles.settingsButton }
                        onPress={ () => setEditPinScreenIsVisible(true) }>
                 { 'Задать PIN' }
             </AppButton>
@@ -53,46 +76,87 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
         pinPad = null;
     }
 
-    if (!isReadyToAdd) {
-        if (walletData.length === 0) {
-            content = (
-                <View style={ styles.buttonContainer }>
-                    { addWallet }
-                    { editPin }
+    if (settingsIsOpened) {
+        screen = (
+            <AppScreen>
+                <EditAccountDataModalWindow visible={ editAccount }
+                                            setVisibility={ setEditAccount }
+                                            accountData={ accountData[0] }
+                                            updateAccountData={ updateAccountData }
+                />
+                <View style={ styles.header }>
+                    <RegularText style={ { fontSize: 22 } }>
+                        { 'Настройки' }
+                    </RegularText>
+                    <AppButton buttonStyle={ styles.closeButton }
+                               onPress={ () => setSettingsIsOpened(false) }>
+                        <AntDesign name={ 'close' } size={ 20 }/>
+                    </AppButton>
                 </View>
-            );
-        } else if (walletData.length !== 0) {
-            content = (
-                <>
+                <View style={ styles.container }>
+                    { editPin }
+                    <AppButton buttonStyle={ styles.settingsButton }
+                               onPress={ () => setEditAccount(true) }
+                    >
+                        { 'Данные аккаунта' }
+                    </AppButton>
+                </View>
+            </AppScreen>
+        );
+    } else {
+        if (!isReadyToAdd) {
+            if (walletData.length === 0) {
+                content = (
                     <View style={ styles.buttonContainer }>
                         { addWallet }
-                        { editPin }
+                        { settings }
                     </View>
-                    <FlatList style={ styles.walletsList }
-                              keyExtractor={ item => item.id }
-                              data={ walletData }
-                              renderItem={
-                                  ({ item }) => (
-                                      <WalletsList item={ item }
-                                                   updateWalletData={ updateWalletData }
-                                                   deleteWalletData={ deleteWalletData }
-                                      />
-                                  )
-                              }
-                    />
-                </>
+                );
+            } else if (walletData.length !== 0) {
+                content = (
+                    <>
+                        <View style={ styles.buttonContainer }>
+                            { addWallet }
+                            { settings }
+                        </View>
+                        <FlatList style={ styles.walletsList }
+                                  keyExtractor={ item => item.id }
+                                  data={ walletData }
+                                  renderItem={
+                                      ({ item }) => (
+                                          <WalletsList item={ item }
+                                                       updateWalletData={ updateWalletData }
+                                                       deleteWalletData={ deleteWalletData }
+                                          />
+                                      )
+                                  }
+                        />
+                    </>
+                );
+            }
+        }
+
+        if (isReadyToAdd) {
+            content = (
+                <AddForm setWalletData={ setWalletData }
+                         setIsReadyToAdd={ setIsReadyToAdd }
+                         setWallet={ setWallet }
+                />
             );
         }
-    }
 
-    if (isReadyToAdd) {
-        content = (
-            <AddForm setWalletData={ setWalletData }
-                     setIsReadyToAdd={ setIsReadyToAdd }
-                     setWallet={ setWallet }
-            />
+        screen = (
+            <AppScreen>
+                <Header onHomePress={ onHomePress }>
+                    { title }
+                </Header>
+                <View style={ styles.container }>
+                    { content }
+                </View>
+            </AppScreen>
         );
     }
+
 
     return (
             <KeyboardAvoidingView  style={ {width: '100%'} }
@@ -102,19 +166,23 @@ export const WalletScreen = ({ onHomePress, setWalletData, walletData, title, up
                                         visible={ editPinScreenIsVisible }
                                         setPinCode={ setPinCode }/>
                 { pinPad }
-                <AppScreen>
-                    <Header onHomePress={ onHomePress }>
-                        { title }
-                    </Header>
-                    <View style={ styles.container }>
-                        { content }
-                    </View>
-                </AppScreen>
+                { screen }
             </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
+    header: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20
+    },
+    closeButton: {
+        width: 50,
+        borderColor: 'transparent'
+    },
     container: {
         width: '100%',
         height: '100%',
@@ -132,6 +200,10 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '45%'
+    },
+    settingsButton: {
+        width: '90%',
+        marginVertical: 20
     },
     walletsList: {
         width: '100%',
