@@ -1,1 +1,1 @@
-# Prism_QR_Payment
+# Bit2Pay
