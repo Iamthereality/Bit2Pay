@@ -29,6 +29,8 @@ export const SelectWallet = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
     itemContainer: {
+        paddingBottom: 10,
+        paddingHorizontal: 5,
         width: '100%',
         flexDirection: 'column',
         alignItems: 'flex-start',

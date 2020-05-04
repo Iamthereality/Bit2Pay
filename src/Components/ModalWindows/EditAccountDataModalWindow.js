@@ -31,7 +31,7 @@ export const EditAccountDataModalWindow = ({ visible, setVisibility, accountData
 
     return (
         <Modal animationType={ 'slide' }
-               transparent={ false }
+               // transparent={ false }
                visible={ visible }>
             <AppScreen style={ styles.container }>
                 <View style={ styles.header }>
@@ -93,11 +93,13 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     buttonContainer: {
-        marginTop: 20,
+        marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
+        paddingBottom: 10,
+        paddingHorizontal: 5
     },
     button: {
         width: '45%'

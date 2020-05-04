@@ -33,6 +33,7 @@ export const CurrencySelect = ({ setCurrency, label, currency }) => {
     if (currency === 'Prizm') {
         prizm = (
             <AppButton buttonStyle={ styles.buttonSelected }
+                       textStyle={ { color: THEME.BLACK_COLOR } }
                        onPress={ () => setCurrency('Prizm') }>
                 { 'PZM' }
             </AppButton>
@@ -42,6 +43,7 @@ export const CurrencySelect = ({ setCurrency, label, currency }) => {
     if (currency === 'Ethereum') {
         ethereum = (
             <AppButton buttonStyle={ styles.buttonSelected }
+                       textStyle={ { color: THEME.BLACK_COLOR } }
                        onPress={ () => setCurrency('Ethereum') }>
                 <MaterialCommunityIcons name={ 'ethereum' } size={ 20 }/>
             </AppButton>
@@ -51,6 +53,7 @@ export const CurrencySelect = ({ setCurrency, label, currency }) => {
     if (currency === 'Bitcoin') {
         bitcoin = (
             <AppButton buttonStyle={ styles.buttonSelected }
+                       textStyle={ { color: THEME.BLACK_COLOR } }
                        onPress={ () => setCurrency('Bitcoin')}>
                 <FontAwesome name={ 'bitcoin' } size={ 20 }/>
             </AppButton>

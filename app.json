@@ -7,13 +7,13 @@
     "platforms": [
       "android"
     ],
-    "version": "1.2.4",
+    "version": "1.4.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#a600ff"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,12 +23,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.homesoftdev.bit2pay",
-      "buildNumber": "1.2.4"
+      "bundleIdentifier": "com.nickLysenko.bit2pay",
+      "buildNumber": "1.4.6"
     },
     "android": {
-      "package": "com.homesoftdev.bit2pay",
-      "versionCode": 14,
+      "package": "com.nickLysenko.bit2pay",
+      "versionCode": 146,
       "permissions": [
         "WRITE_EXTERNAL_STORAGE"
       ]

@@ -102,7 +102,7 @@ export const MainScreen = ({ title }) => {
 
     const spin = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['360deg', '0deg']
+        outputRange: ['0deg', '360deg']
     });
 
     return (
@@ -111,9 +111,17 @@ export const MainScreen = ({ title }) => {
                 { title }
             </ThinText>
             <View style={ styles.logo }>
+                <View style={ { ...styles.logoWrapper, justifyContent: 'center'} }>
+                    <Animated.Image style={ { ...styles.logoImage, transform: [{rotate: spin}] } }
+                                    source={ require('../../assets/prizm.png') }
+                    />
+                </View>
                 <View style={ styles.logoWrapper }>
                     <Animated.Image style={ { ...styles.logoImage, transform: [{rotate: spin}] } }
-                                    source={ require('../../assets/prizm_logo.png') }
+                                    source={ require('../../assets/Bitcoin.png') }
+                    />
+                    <Animated.Image style={ { ...styles.logoImage, transform: [{rotate: spin}] } }
+                                    source={ require('../../assets/Ethereum.png') }
                     />
                 </View>
             </View>
@@ -124,17 +132,18 @@ export const MainScreen = ({ title }) => {
 
 const styles = StyleSheet.create({
     logoWrapper: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        height: 300,
+        justifyContent: 'space-around',
         width: '100%'
     },
     logoImage: {
         resizeMode: 'contain',
-        width: 250,
-        height: 250
+        width: 80,
+        height: 80
     },
     logo: {
+        width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10

@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '45%',
-        marginVertical: 30,
-        backgroundColor: THEME.MAIN_COLOR
+        marginVertical: 30
     }
 });

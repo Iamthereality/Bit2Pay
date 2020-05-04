@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, KeyboardAvoidingView, StyleSheet, Alert } from 'react-native';
+import {View, StyleSheet, Alert, ScrollView } from 'react-native';
 
 import { RegularText } from "../Components/UI/RegularText";
 import { InputForm } from "../Components/UI/InputForm";
@@ -31,53 +31,47 @@ export const InitialScreen = ({ setAccountData, setInitialModal, setUserAccount 
 
 
     return (
-        <KeyboardAvoidingView style={ styles.container }
-                              behavior={ "position" }
-                              keyboardVerticalOffset={ -140 }
-        >
-            <View style={ styles.inner }>
-                <View style={ styles.header }>
-                    <RegularText style={ { fontSize: 22 } }>
-                        { `Добро пожалоать в Bit2Pay` }
-                    </RegularText>
-                </View>
-                <View style={ styles.inputs }>
-                    <InputForm placeholder={ 'Введите ИНН' }
-                               value={ userTaxNumber }
-                               onChangeText={ setUserTaxNumber }
-                    />
-                    <InputForm placeholder={ 'Укажите контактное лицо' }
-                               value={ contact }
-                               onChangeText={ setContact }
-                    />
-                    <InputForm placeholder={ 'Введите номер телефона' }
-                               value={ phone }
-                               onChangeText={ setPhone }
-                    />
-                    <InputForm placeholder={ 'Введите email' }
-                               value={ email }
-                               onChangeText={ setEmail }
-                    />
-                </View>
-                <AppButton buttonStyle={ styles.button }
-                           onPress={ setAccount }
+        <ScrollView contentContainerStyle={ styles.container }>
+            <View style={ styles.header }>
+                <RegularText style={ { fontSize: 22 } }>
+                    { `Добро пожалоать в Bit2Pay` }
+                </RegularText>
+            </View>
+            <View style={ styles.inputs }>
+                <InputForm placeholder={ 'Введите ИНН' }
+                           value={ userTaxNumber }
+                           onChangeText={ setUserTaxNumber }
+                />
+                <InputForm placeholder={ 'Укажите контактное лицо' }
+                           value={ contact }
+                           onChangeText={ setContact }
+                />
+                <InputForm placeholder={ 'Введите номер телефона' }
+                           value={ phone }
+                           onChangeText={ setPhone }
+                />
+                <InputForm placeholder={ 'Введите email' }
+                           value={ email }
+                           onChangeText={ setEmail }
+                />
+            </View>
+            <View style={ styles.buttonContainer }>
+                <AppButton
+                    buttonStyle={ styles.button }
+                    onPress={ setAccount }
                 >
                     { 'Далее' }
                 </AppButton>
             </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        flex: 1
-    },
-    inner: {
-        padding: 20,
-        justifyContent: "space-around",
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
     },
     header: {
         fontSize: 36,
@@ -90,7 +84,6 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     button: {
-        width: '40%',
-        backgroundColor: THEME.MAIN_COLOR
+        width: '40%'
     }
 });

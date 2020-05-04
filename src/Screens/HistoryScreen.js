@@ -16,10 +16,11 @@ export const HistoryScreen = ({ onHomePress, style, title, walletData, deleteTra
     };
 
     const modalWindow = wallet ?
-        <TransactionsHistory wallet={ wallet }
-                             setVisibility={ setVisibility }
-                             visibility={ visibility }
-                             deleteTransactions={ deleteTransactions }
+        <TransactionsHistory
+            wallet={ wallet }
+            setVisibility={ setVisibility }
+            visibility={ visibility }
+            deleteTransactions={ deleteTransactions }
         /> : null;
 
     let content = (

@@ -9,18 +9,27 @@ import { THEME } from "../THEME";
 export const Navbar = ({ screenSelect }) => {
     return (
         <View style={ styles.navbar }>
-            <AppButton onPress={ () => screenSelect('QR') }
-                       onLongPress={ () => screenSelect(null) }
+            <AppButton
+                buttonStyle={ { backgroundColor: THEME.MAIN_COLOR, borderColor: 'transparent' } }
+                textStyle={ { color: THEME.BLACK_COLOR } }
+                onPress={ () => screenSelect('QR') }
+                onLongPress={ () => screenSelect(null) }
             >
                 <AntDesign name={ 'qrcode' } size={ 30 }/>
             </AppButton>
-            <AppButton onPress={ () => screenSelect('HISTORY') }
-                       onLongPress={ () => screenSelect(null) }
+            <AppButton
+                buttonStyle={ { backgroundColor: THEME.MAIN_COLOR, borderColor: 'transparent' } }
+                textStyle={ { color: THEME.BLACK_COLOR } }
+                onPress={ () => screenSelect('HISTORY') }
+                onLongPress={ () => screenSelect(null) }
             >
                <Foundation  name={ 'database' } size={ 30 }/>
             </AppButton>
-            <AppButton onPress={ () => screenSelect('WALLET') }
-                       onLongPress={ () => screenSelect(null) }
+            <AppButton
+                buttonStyle={ { backgroundColor: THEME.MAIN_COLOR, borderColor: 'transparent' } }
+                textStyle={ { color: THEME.BLACK_COLOR } }
+                onPress={ () => screenSelect('WALLET') }
+                onLongPress={ () => screenSelect(null) }
             >
                 <SimpleLineIcons name={ 'wallet' } size={ 30 }/>
             </AppButton>

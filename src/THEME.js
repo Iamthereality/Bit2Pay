@@ -1,8 +1,8 @@
 const black = '#000000';
 export const THEME = {
     MAIN_COLOR: '#a600ff',
-    WHITE_COLOR: '#ffffff',
-    BLACK_COLOR: black,
+    WHITE_COLOR: '#000000',
+    BLACK_COLOR: '#FFFFFF',
     CONTAINER: {
         paddingTop: 20,
         padding: 20,
@@ -11,6 +11,6 @@ export const THEME = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: black
+        backgroundColor: '#FFFFFF'
     }
 };

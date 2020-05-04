@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, KeyboardAvoidingView  } from 'react-native';
+import { StyleSheet, View, FlatList, KeyboardAvoidingView } from 'react-native';
 
 import { AntDesign, Feather } from '@expo/vector-icons';
 
@@ -161,7 +161,8 @@ export const WalletScreen = ({
     return (
             <KeyboardAvoidingView  style={ {width: '100%'} }
                                    behavior={ 'position' }
-                                   keyboardVerticalOffset={ -50 }>
+                                   keyboardVerticalOffset={ -100 }
+            >
                 <EditPinCodeModalWindow setVisibility={ setEditPinScreenIsVisible }
                                         visible={ editPinScreenIsVisible }
                                         setPinCode={ setPinCode }/>
